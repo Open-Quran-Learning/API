@@ -16,7 +16,7 @@ def user_required(original_function):
         #     return original_function(*args, **kwargs)
         # if request.method=="POST":
 
-        #we don't have to check for methode of the request as the token must be passed with the request
+        #we don't have to check for  the method of the request as the token must be passed with the request
 
         current_user_token = request.get_json('token')
         current_user = User.query.filter_by(token = current_user_token).first()
