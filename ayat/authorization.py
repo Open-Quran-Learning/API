@@ -16,7 +16,7 @@ def user_required(original_function):
             return original_function(*args, **kwargs)
         if request.method=="POST":
 
-            current_user_token = request.get_json['token']
+            current_user_token = request.get_json('token')
             current_user = User.query.filter_by(token = current_user_token).first()
 
             if not current_user:
@@ -39,7 +39,7 @@ def admin_required(original_function):
         if request.method=="GET":
             return original_function(*args, **kwargs)
         if request.method=="POST":
-            current_user_token = request.get_json['token']
+            current_user_token = request.get_json('token')
 
             current_user = User.query.filter_by(token = current_user_token).first()
             if not current_user:
