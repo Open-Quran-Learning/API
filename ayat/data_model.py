@@ -9,36 +9,39 @@ db = SQLAlchemy(app)
 
 
 class UserType(db.Model):
-    __tablename__ = 'user_type'
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.VARCHAR(), unique=True)
+    __tablename__ = 'usertype'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    type = db.Column(db.VARCHAR(20), unique=True)
+    users = db.relationship('User', backref='user_id', lazy=True)
 
     def __init__(self, _type):
         self.type = _type
 
 
 user_address = db.Table('user_address',
-                        db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                        db.Column('user_id', db.Integer, db.ForeignKey('address.id')))
+                        db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                        db.Column('address', db.Integer, db.ForeignKey('address.id'), primary_key=True))
 
 
 class User(db.Model):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_name = db.Column(db.VARCHAR(30), unique=True)
     first_name = db.Column(db.VARCHAR(30), unique=False)
     last_name = db.Column(db.VARCHAR(30), unique=False)
-    guardian_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    guardian_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
+    guardian = db.relationship('User', uselist=False, remote_side=[id])
     email = db.Column(db.VARCHAR(120), unique=True)
     token = db.Column(db.VARCHAR(), unique=True)
     chat_id = db.Column(db.Integer, nullable=False)
-    profile_picture = db.Column(db.VARCHAR(20))
-    birth_date = db.Column(db.Date)
+    profile_picture = db.Column(db.VARCHAR(20), nullable=True)
+    birth_date = db.Column(db.Date, nullable=True)
     gender = db.Column(db.Boolean)
     password = db.Column(db.VARCHAR(40))
-    user_type_id = db.Column(db.Integer, db.ForeignKey('user_type.type'))
-    sub = db.relationship('address', secondary=user_address ,lazy='dynamic',
-                          backref=db.backref('user', lazy=True))
+    user_type_id = db.Column(db.Integer, db.ForeignKey('usertype.id'))
+    phone_number = db.relationship('Cellphone', backref='user', lazy=True)
+    user_address = db.relationship('Address', secondary=user_address, lazy='dynamic',
+                                   backref=db.backref('user', lazy=True))
 
     def __init__(self, user_name, first_name, last_name, email, token, chat_id, profile_picture,
                  birth_date, gender, password):
@@ -59,7 +62,7 @@ class User(db.Model):
 
 class Address(db.Model):
     __tablename__ = 'address'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     country_name = db.Column(db.VARCHAR(30), unique=False, nullable=True)
 
     def __init__(self, country):
@@ -71,7 +74,7 @@ class Address(db.Model):
 
 class Cellphone(db.Model):
     __tablename__ = 'cellphone'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     phone_number = db.Column(db.VARCHAR(20), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
