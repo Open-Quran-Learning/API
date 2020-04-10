@@ -1,4 +1,4 @@
-from flask import Flask, request,jsonify
+from flask import Flask, request, jsonify
 from ayat import app
 # import requests
 
@@ -7,21 +7,25 @@ from .data_model import *
 from functools import wraps
 
 
-def logged_in_required(original_function):
+def user_required(original_function):
 
     @wraps(original_function)
     def wrapper(*args, **kwargs):
         
-        current_user_token = request.json['token']
-        current_user = User.query.filter_by(token = current_user_token).first()
-
-        if not current_user:
-            return jsonify({
-
-                'status': 404
-            })
-        else:
+        if request.method=="GET":
             return original_function(*args, **kwargs)
+        if request.method=="POST":
+
+            current_user_token = request.get_json['token']
+            current_user = User.query.filter_by(token = current_user_token).first()
+
+            if not current_user:
+                return jsonify({
+
+                    'status': 404
+                })
+            else:
+                return original_function(*args, **kwargs)
 
     return wrapper
 
@@ -30,24 +34,27 @@ def logged_in_required(original_function):
 def admin_required(original_function):
 
     @wraps(original_function)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs,):
         
-        current_user_token = request.json['token']
+        if request.method=="GET":
+            return original_function(*args, **kwargs)
+        if request.method=="POST":
+            current_user_token = request.get_json['token']
 
-        current_user = User.query.filter_by(token = current_user_token).first()
-        if not current_user:
-            return jsonify({
+            current_user = User.query.filter_by(token = current_user_token).first()
+            if not current_user:
+                return jsonify({
 
-                'status': 404
-            })
+                    'status': 404
+                })
 
-        current_user_admin_check = current_user.user_type_id
+            current_user_admin_check = current_user.user_type_id
 
-        if  current_user_admin_check != 1:
-            return jsonify({
+            if  current_user_admin_check != 1:
+                return jsonify({
 
-                'status': 404
-            })
+                    'status': 404
+                })
         
         return original_function(*args, **kwargs) 
     
