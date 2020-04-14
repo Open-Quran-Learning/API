@@ -155,6 +155,7 @@ code 200:
 |   1  | Email already exists |
 |   2  | Phone already exists |
 <hr />    
+
 ### Quiz
 
 <hr />    
