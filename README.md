@@ -33,12 +33,13 @@ from ayat import <name>
 
 4- Kindly add your documentation below at documentation section.
 
-now, I can pay you a pizza and I have to pay my respects to your mother.
+now, I can pay you a pizza.
 
 ## Documentation
 
 - [Users](#Users)
-
+- [Lessons](#Lessons)
+- [Duplicate resource codes](#Duplicate-resource-codes)
 ### Users
 <hr />    
 
@@ -70,8 +71,7 @@ code: 401
     "error": "user is unauthorized"
 }
 ```
-<hr />    
-
+    
 #### - how to register new user
 ##### Method: POST        
 ##### Payload: 
@@ -148,11 +148,160 @@ code 200:
     "status":  "deleted"              
 }
 ```
-#### Duplicate resource codes:
+
+### Lessons
+<hr />    
+
+#### Route: `api.ayat.com/v1/programs/{id}/courses/{id}/lessons`
+<hr />    
+
+#### - Retrieve all lessons in the course 
+##### Route: `api.ayat.com/v1/programs/{id}/courses/{id}/lessons`
+##### Method: GET        
+##### Payload: 
+```Json
+{
+    "jwt":  "32132143432432",
+    "public_id":  "123123123"
+}
+```         
+##### Success Response:
+code : 200
+```Json
+{
+    "name":   "lessonName",
+    "objective":  "123123",
+    "reading_time":   "12",
+}
+```
+##### Error Response:
+code: 401
+```json
+{
+    "error": "user is unauthorized"
+}
+```
+
+
+#### - Retrieve a specific lesson in the course    
+##### Route: `api.ayat.com/v1/programs/{id}/courses/{id}/lessons/{id}`    
+##### Method: POST        
+##### Payload: 
+```Json
+{
+    "jwt":  "32132143432432",
+    "public_id":  "123123123",
+    "lesson_number":  "1"
+}
+```         
+##### Success Response:
+code : 200
+```Json
+{
+    "name":   "lessonName",
+    "objective":  "123123",
+    "reading_time":   "12",
+    "content":   "content example"
+}
+```
+##### Error Response:
+code: 401
+```json
+{
+    "error": "user is unauthorized"
+}
+```
+
+
+#### - Create a new lesson in the course    
+##### Route: `api.ayat.com/v1/programs/{id}/courses/{id}/lessons/{id}`    
+##### Method: POST        
+##### Payload: 
+```Json
+{
+    "jwt":  "32132143432432",
+    "public_id":  "123123123",
+    "lesson_number":  "1",
+    "name":  "example",
+    "objective":  "123123",
+    "reading_time":   "12",
+    "content":   "content example"
+}
+```         
+##### Success Response:
+code : 200
+```Json
+{
+    "status":   "<Duplicate resource codes>"
+}
+```
+##### Error Response:
+code: 401
+```json
+{
+    "error": "user is unauthorized"
+}
+```
+
+
+#### - Create a new lesson in the course    
+##### Route: `api.ayat.com/v1/programs/{id}/courses/{id}/lessons/{id}`    
+##### Method: PUT        
+##### Payload: 
+```Json
+{
+    "jwt":  "32132143432432",
+    "public_id":  "123123123",
+    "lesson_number":  "1",
+    "name":  "example",
+    "objective":  "123123",
+    "reading_time":   "12",
+    "content":   "content example"
+}
+```         
+##### Success Response:
+code 200: 
+```Json
+{
+    "status":  "updated"
+}
+```
+or
+```Json
+{
+    "status":  "<Duplicate resource codes>"
+}
+```
+
+
+#### - how to delete lesson from database
+##### Method: DELETE        
+##### Payload: 
+```Json
+{
+    "jwt":   "ffff",
+    "public_id":  "123123123",
+    "lesson_number": 2
+}
+````         
+##### Success Response:
+code 200: 
+```Json
+{
+    "status":  "deleted"              
+}
+```
+<hr />    
+
+### Duplicate resource codes
 | code |      description     |
 |:----:|:--------------------:|
 |   1  | Email already exists |
 |   2  | Phone already exists |
+|   3  | Lesson already exists |
+|   4  | Lesson number already exists |
+
+
 <hr />    
 
 
