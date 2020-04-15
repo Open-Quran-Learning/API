@@ -39,11 +39,15 @@ now, I can pay you a pizza.
 - [Users][]
 - [Lessons][]
 - [Quizzes][]
+- [Courses][]
+- [Contacts][]
 
 
 [Users]: ./docs/users.md
 [Lessons]: ./docs/lessons.md
 [Quizzes]: ./docs/quizzes.md
+[Courses]: ./docs/courses.md
+[Contacts]: ./docs/contacts.md
 
 
 
@@ -53,6 +57,7 @@ now, I can pay you a pizza.
 |   1  | Email already exists |
 |   2  | Phone already exists |
 |   3  | Lesson order already exists |
+|   4  | Course already exists |
 
 
 <hr />    
