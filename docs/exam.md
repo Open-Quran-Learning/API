@@ -1,17 +1,15 @@
 ### Exam 
 --- --- ---
-### Route: api/v1/programs/{id}/exam
---- --- ---
+
 --- --- --- 
 #### Retrieve exam for a specefic lesson or course 
+#### Route: api.ayat.com/v1/programs/{id}/exams
 --- --- ---
 ##### method: get 
 ##### payload:
 ```json
 {
-    "program_name": "myprogram",
-    "course_name": "mycourse",
-    "lesson_name ": "mylesson",
+
     "jwt": "65416584846465644546"
 
 }
@@ -78,14 +76,13 @@
 --- --- ---
 #### Create exam for a specefic lesson or course 
 --- --- ---
+##### Route: api.ayat.com/v1/programs/exams
 ##### method: POST 
 ##### payload:
 
 ```json
 {
-    "program_name": "myprogram",
-    "course_name": "mycourse",
-    "lesson_name ": "mylesson",
+
     "jwt": "65416584846465644546",
     
     
@@ -147,7 +144,8 @@
 ##### code 200:
 ```json
 {
-    "status":  "created"
+    "status":  "created",
+    "exam_id": "id"
 }
 ```
 ##### or 
@@ -157,8 +155,16 @@
 }
 ```
 
+##### no permission
+##### code 403:
+```json
+{
+    "status":  "no permission"
+}
+```
 --- --- ---
-#### update existed exam for a specefic lesson or course 
+#### update existed exam for a specefic lesson or course
+#### Route: api.ayat.com/v1/programs/{id}/exams/{id}
 #### the flow is as following:
 - get the desired exam json file 
 - modify it in the front end 
@@ -170,9 +176,6 @@
 
 ```json
 {
-    "program_name": "myprogram",
-    "course_name": "mycourse",
-    "lesson_name ": "mylesson",
     "jwt": "65416584846465644546",
     
     
@@ -243,17 +246,24 @@
     "status":  "not_existed"
 }
 ```
+##### no permission
+##### code 403:
+```json
+{
+    "status":  "no permission"
+}
+```
 
 --- --- --- 
 #### delete exam from a specefic lesson or course 
+#### Route: api.ayat.com/v1/programs/{id}/exams/{id}
 --- --- ---
+
 ##### method: DELETE 
 ##### payload:
 ```json
 {
-    "program_name": "myprogram",
-    "course_name": "mycourse",
-    "lesson_name ": "mylesson",
+
     "jwt": "65416584846465644546"
 
 }
@@ -266,4 +276,10 @@
     "status":  "deleted"
 }
 ```
-
+##### no permission
+##### code 403:
+```json
+{
+    "status":  "no permission"
+}
+```
