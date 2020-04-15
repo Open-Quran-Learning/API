@@ -21,3 +21,11 @@ code : 200
     "status" : "success"
 }
 ```
+
+##### Error Response:
+code : 403
+```Json
+{
+    "status" : "unauthorized"
+}
+```
