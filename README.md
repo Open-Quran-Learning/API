@@ -39,11 +39,15 @@ now, I can pay you a pizza.
 - [Users][]
 - [Lessons][]
 - [Quizzes][]
+- [Courses][]
+- [Contacts][]
 
 
 [Users]: ./docs/users.md
 [Lessons]: ./docs/lessons.md
 [Quizzes]: ./docs/quizzes.md
+[Courses]: ./docs/courses.md
+[Contacts]: ./docs/contacts.md
 
 
 
