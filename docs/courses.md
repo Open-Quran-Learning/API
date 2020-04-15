@@ -35,10 +35,10 @@
 ```json
 {
     "response": [
-        course.title,
-        course.description,
-        course.order,
-        course.program_id
+        "course.title",
+        "course.description",
+        "course.order",
+        "course.program_id"
     ]
 }
 ```
@@ -52,7 +52,7 @@
 {
     "jwt":   "ffff",
     "course_name": "Title",
-    "course_discreption": "discreption",
+    "course_description": "description",
     "course_order": "order",
     "program_id": "public_program_id"
 
@@ -102,7 +102,7 @@ or
 - Code: `403`
 ```json
 {
-    "error": "forbiddend"
+    "error": "forbidden"
 }
 ```
 or
@@ -138,11 +138,5 @@ or
     "error": "forbidden"
 }
 ```
-
-
-#### Duplicate resource codes:
-| code  |      description      |
-|:-----:|:---------------------:|
-|   60  | Course already exists |
 
 <hr />
