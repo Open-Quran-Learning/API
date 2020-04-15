@@ -38,10 +38,12 @@ now, I can pay you a pizza.
 ## Documentation
 - [Users][]
 - [Lessons][]
+- [Quizzes][]
 
 
 [Users]: ./docs/users.md
 [Lessons]: ./docs/lessons.md
+[Quizzes]: ./docs/quizzes.md
 
 
 
@@ -55,91 +57,6 @@ now, I can pay you a pizza.
 
 <hr />    
 
-### Quiz
-
-<hr />    
-
-#### Route: `api.ayat.com/v1/quiz`
-<hr /> 
-
-#### - how to enter quiz route
-##### Method: GET        
-##### Payload: 
-   ```Json
-{
-    "jwt": "65416584846465644546",
-    
-}
-```   
-##### Success Response:
-code : 202
-```Json
-{
-    "status":  "Accepted"
-}
-```
-##### Error Response:
-code: 401
-```json
-{
-    "error": "user is unauthorized"
-}
-```
-#### - how to enter your quiz
-##### Method: POST        
-##### Payload:
-```Json 
-{
-    "jwt":   "ffff",
-    "program[id]":  "example",
-    "course[id]":  "example"
-}
-
-```   
-##### Success Response:
-code : 200
-```Json
-{
-    "status":  "created"
-}
-```
-##### Error Response:
-code: 402
-```json
-{
-    "error": "Payment Required"
-}
-```
-#### - enter your respone in the quiz
-##### Method: PUT        
-##### Payload:
-```Json 
-{
-    "jwt":   "ffff",
-    "program[id]":  "example",
-    "course[id]":  "example",
-    "Q1":  "example",
-    "Q2":  "example",
-    "Q3":  "example"
-    
-    
-}
-
-```   
-##### Success Response:
-code : 200
-```Json
-{
-    "status":  "updated"
-}
-```
-##### Error Response:
-code: 429
-```json
-{
-    "error": " Too Many Requests"
-}
-```
 
 
 
