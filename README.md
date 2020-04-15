@@ -141,5 +141,79 @@ code: 429
 }
 ```
 
+--- --- ---
+### Exams
+--- --- ---
+#### Retrieve exam for a specefic lesson or course
+#### method: get
+
+##### payload:
+```
+{
+    "program_name": "myprogram",
+    "course_name": "mycourse",
+    "lesson_name ": "mylesson"
+
+}
+```
+
+##### success response
+##### code 200
+```
+{
+  "description": "This is a description of an exam",
+  
+    "questions": [{
+    "description": "This is a description of a set of related questions",
+    
+    "type": "mcq",
+    "content": [
+          {
+          "question":"What is the correct answer for this question?",
+          "answers":[
+            ["correct answer",true],
+            ["incorrect answer",false],
+            ["incorrect answer",false],
+            ["incorrect answer",false]
+          ]
+        } 
+      ]
+    },
+    
+    {
+    "description": "This is a description of a set of related questions",
+    
+    "type": "multiple_right",
+    "content": [
+          {
+          "question":"What is the correct answer for this question?",
+          "answers":[
+            ["first correct answer",true],
+            ["incorrect answer",false],
+            ["second correct answer",true],
+            ["incorrect answer",false]
+          ]
+        } 
+      ]
+    },
+    
+    {
+    "description": "This is a description of a set of related questions",
+    
+    "type": "discribtive",
+    "content": [
+          {
+          "question":"What is the correct answer for this question?",
+          "answers":"describtive answer shown to the student to make sure of his answer"
+        } 
+      ]
+    }
+    
+  ]
+}
+```
+
+--- --- ---
+
 
 
