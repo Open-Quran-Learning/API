@@ -1,10 +1,4 @@
-
-
-## Documentation
-
-
-
-### Quiz
+### Quizzes
 
 <hr />    
 
