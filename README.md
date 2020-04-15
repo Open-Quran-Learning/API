@@ -148,7 +148,7 @@ code: 429
 #### method: get
 
 ##### payload:
-```
+```Json
 {
     "program_name": "myprogram",
     "course_name": "mycourse",
@@ -159,7 +159,7 @@ code: 429
 
 ##### success response
 ##### code 200
-```
+```Json
 {
   "description": "This is a description of an exam",
   
