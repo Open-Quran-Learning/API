@@ -9,9 +9,11 @@
 
 #### - How to add a program
 ##### - Method : Post
+##### - URL : 'api.ayat.com/v1/programs'
 ##### - payload
 ```json
 {
+    "user_public_id": "fs5cfew3csd",
     "JWT": "fg5562ase84c4",
 
     "program_name": "<Name example>",
@@ -59,11 +61,30 @@
 
 }
 ```
+
+#### Success responce:
+##### Code 200
+```json
+{
+    "status": "created"
+}
+```
+#### Error responce :
+##### code 403
+```json
+{
+    "status": "Forbidden"
+}
+```
+
 #### - How to Edit a program
 ##### - Method : Put
+##### - URL : 'api.ayat.com/v1/programs/{id}'
 ##### - payload
 ```json
 {
+    "JWT": "adfgv5erw85s3",
+    "user_public_id": "fs5cfew3csd",
     "program_name": "name example",
 
     "prerequisite": [
@@ -119,13 +140,14 @@ code : 200
 ##### code: 403
 ```json
 {
-    "status": "Don't have permission"
+    "status": "Forbidden"
 }
 ```
 
 
 #### - How to Retrieve a program
 ##### - Method : Get
+##### URL : 'api.ayat.com/v1/programs'
 ##### - payload
 
 ```json
@@ -190,10 +212,12 @@ code : 200
 
 #### - How to Delete a program
 ##### - Method : Delete
+##### - URL : 'api.ayat.com/v1/programs/{id}'
 ##### - payload
 
 ```json
 {
+    "JWT": "adfgv5erw85s3",
     "user_public_id": "fs5cfew3csd"
 }
 ```
