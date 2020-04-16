@@ -1,10 +1,15 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
-db = SQLAlchemy()
+app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"]= os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 
 class User(db.Model):
@@ -34,31 +39,32 @@ class User(db.Model):
     		f'{self.__class__.__name__} Name: {self.name}.\n'
     		f'Public Id: {self.public_id}.\n'
     		f'E-mail: {self.email}.\n'
-    		f'Address Id: {self.address_id}.\n'
+    		f'Country: {self.country_name}.\n'
     		f'Phone Number: {self.phone_number}.\n'
     		f'Profile Picture: {self.profile_picture}.\n'
     		f'Birth Date: {self.birth_date}.\n'
     		f'Gender: {self.gender}.\n'
     		f'Password: {self.password}.\n'
     		f'Registeration Date: {self.registeration_date}.\n'
-    		f'Activation: {self.is_activated}.')
+    		f'Activation: {self.is_activated}.'
+    		)
 
     	return Info_text
 
 #############################################################################################################
 
 Student_Guardian = db.Table('student_guardian', db.Model.metadata,
-    db.Column('user_guardian_id', db.Integer, primary_key=True),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.user_id'), nullable=False),
+    db.Column('student_guardian_id', db.Integer, primary_key=True),
+    db.Column('student_id', db.Integer, db.ForeignKey('student.student_id'), nullable=False),
     db.Column('guardian_id', db.Integer, db.ForeignKey('guardian.guardian_id'), nullable=False),  
 
-    UniqueConstraint('user_id','guardian_id'))
+    UniqueConstraint('student_id','guardian_id'))
 
 
 class Student(User):
     __tablename__ = "student"
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    guardians = db.relationship('Guardian', secondary=Student_Guardian, backref='students')
+    student_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    guardians = db.relationship('Guardian', secondary=Student_Guardian, backref=db.backref('students',lazy='dynamic'))
 
     __mapper_args__ = {'polymorphic_identity':'student'}
 
@@ -81,15 +87,15 @@ class Guardian(db.Model):
 Staff_Permission = db.Table('staff_permission', db.Model.metadata,
     db.Column('staff_permission_id', db.Integer, primary_key=True),
     db.Column('permission_id', db.SmallInteger, db.ForeignKey('permission.permission_id'), nullable=False),
-    db.Column('staff_id', db.Integer, db.ForeignKey('staff.user_id'), nullable= False),  
+    db.Column('staff_id', db.Integer, db.ForeignKey('staff.staff_id'), nullable= False),  
 
     UniqueConstraint('staff_id','permission_id'))
 
 
 class Staff(User):
     __tablename__ = "staff"
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    permissions = db.relationship('Permission', secondary=Staff_Permission, backref='staff')
+    staff_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
+    permissions = db.relationship('Permission', secondary=Staff_Permission, backref=db.backref('staff',lazy='dynamic'))
 
     __mapper_args__ = {'polymorphic_identity':'staff'}
 
@@ -97,7 +103,7 @@ class Staff(User):
 class Permission(db.Model):
     __tablename__ = "permission"
     permission_id = db.Column(db.Integer, primary_key=True)
-    permission_name = db.Column(db.VARCHAR() , nullable=False)
+    permission_name = db.Column(db.VARCHAR(50) , nullable=False)
 
     def __repr__(self):
         Info_text = (f'Permission Id: {self.permission_id}.\n'
