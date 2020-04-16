@@ -1,21 +1,24 @@
 ### Contacts
-<hr />    
 
-#### Route: `api.ayat.com/v1/contacts`
-<hr />    
+<hr />
 
-#### - how to create a complaint on a student    
-##### Method: POST
-##### Payload: 
+#### Create a complaint
+
+`api.ayat.com/v1/contacts` **`POST`**
+
+##### Payload:
+
 ```Json
 {
     "jwt": "65416584846465644546",
     "msg_content" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 }
-``` 
+```
 
 ##### Success Response:
-code : 200
+
+code : **`200`**
+
 ```Json
 {
     "status" : "success"
@@ -23,7 +26,9 @@ code : 200
 ```
 
 ##### Error Response:
-code : 403
+
+code : **`403`**
+
 ```Json
 {
     "status" : "unauthorized"

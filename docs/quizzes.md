@@ -1,108 +1,176 @@
 ### Quizzes
 
-<hr />    
+<hr />
 
-#### Route: `api/v1/programs/{id}/courses/{id}/quizzes`
-<hr /> 
+#### Retrieve all quizzes
 
-#### - how to enter quiz route
-##### Method: GET        
-##### Payload: 
-   ```Json
+`api.ayat.com/v1/programs/{id}/courses/{id}/quizzes` **`GET`**
+
+##### Payload:
+
+```Json
 {
-    "jwt": "65416584846465644546"
-    
+ "jwt": "65416584846465644546"
 }
-```   
+```
+
 ##### Success Response:
-code : 200
-```
-List of quizzes
-```
-##### Error Response:
-code: 401
+
+code: **`200`**
+
 ```json
 {
-    "error": "user is unauthorized"
+  "quizes": [...]
 }
 ```
-#### - Create quiz
-##### - Route = `api/v1/programs/{id}/courses/{id}/quizzes`
-##### Method: POST        
+
+##### Error Response:
+
+code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Retrieving a specific quiz
+
+`api.ayat.com/v1/programs/{id}/courses/{id}/quizzes/{id}` **`GET`**
+
 ##### Payload:
-```Json 
+
+```json
+{
+  "jwt": "32132143432432"
+}
+```
+
+##### Success Response:
+
+- Code: **`200`**
+
+```json
+{
+  // course data.
+}
+```
+
+##### Error Response:
+
+code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Create quiz
+
+`api/v1/programs/{id}/courses/{id}/quizzes` **`POST`**
+
+##### Payload:
+
+```Json
 {
     "jwt":   "ffff",
     "Quiz content" : "dummy content"
 }
 
-```   
+```
+
 ##### Success Response:
-code : 200
+
+code : **`200`**
+
 ```Json
 {
     "status":  "created"
 }
 ```
+
 ##### Error Response:
-code: 401
+
+code: **`403`**
+
 ```json
 {
-    "error": "user is unauthorized"
+  "error": "user is unauthorized"
 }
 ```
-#### - Update the quiz
-#### - Route = `api/v1/programs/{id}/courses/{id}/quizzes`
-##### Method: PUT        
+
+<hr />
+
+#### Update the quiz
+
+`api/v1/programs/{id}/courses/{id}/quizzes/{id}` **`PUT`**
+
 ##### Payload:
-```Json 
+
+```Json
 {
     "jwt":   "ffff",
-    "Content" : "content"
-    
-    
+    "content" : "content"
 }
 
-```   
+```
+
 ##### Success Response:
-code : 200
+
+code : **`200`**
+
 ```Json
 {
     "status":  "updated"
 }
 ```
+
 ##### Error Response:
-code: 401
+
+code: **`403`**
+
 ```json
 {
-    "error": "user is unauthorized"
+  "error": "user is unauthorized"
 }
 ```
-#### - Delete the quiz
-#### - Route = `api/v1/programs/{id}/courses/{id}/quizzes/{id}`
-##### Method: DELETE        
+
+<hr />
+
+#### Delete the quiz
+
+`api/v1/programs/{id}/courses/{id}/quizzes/{id}` **`DELETE`**
+
 ##### Payload:
-```Json 
+
+```Json
 {
     "jwt":   "ffff"
-    
-    
-    
 }
 
-```   
+```
+
 ##### Success Response:
-code : 200
+
+code : **`200`**
+
 ```Json
 {
     "status":  "deleted"
 }
 ```
+
 ##### Error Response:
-code: 401
+
+code: **`403`**
+
 ```json
 {
-    "error": "user is unauthorized"
+  "error": "user is unauthorized"
 }
 ```
-
