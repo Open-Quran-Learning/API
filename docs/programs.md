@@ -1,242 +1,258 @@
-- [Programs](#Programs)
-
 ### Programs
-<hr/>
-
-### Route : 'api.ayat.com/v1/programs'
 
 <hr/>
 
-#### - How to add a program
-##### - Method : Post
-##### - URL : 'api.ayat.com/v1/programs'
-##### - payload
+#### Create a program
+
+`api.ayat.com/v1/programs` **`Post`**
+
+##### Payload
+
 ```json
 {
-    "user_public_id": "fs5cfew3csd",
-    "JWT": "fg5562ase84c4",
+  "JWT": "fg5562ase84c4",
 
-    "program_name": "<Name example>",
+  "program_name": "<Name example>",
 
-    "prerequisite": [
-        {
-            "name": "name example"
-        },
-        {
-            "name": "name example"
-        }
-        ],
-    "program_level": "<Difficulty>",
+  "prerequisite": [
+    {
+      "name": "name example"
+    },
+    {
+      "name": "name example"
+    }
+  ],
+  "program_level": "<Difficulty>",
 
-    "program_category": [
-        {
-            "type": "example"
-            
-        },
-        {
-            "type": "example"
-        }
-    ],
+  "program_category": [
+    {
+      "type": "example"
+    },
+    {
+      "type": "example"
+    }
+  ],
 
-    "price": "$$$",
+  "price": "$$$",
 
-    "program_pic": "<Local Pic>",
+  "program_pic": "<Local Pic>",
 
-    "FAQ": [
-        {
-            "question": "Text",
-            "answer": "Text"
-        },
-        {
-            "question": "Text",
-            "answer": "Text"
-        }
-    ],
+  "FAQ": [
+    {
+      "question": "Text",
+      "answer": "Text"
+    },
+    {
+      "question": "Text",
+      "answer": "Text"
+    }
+  ],
 
-    "program_cover": "<Local pic>",
+  "program_cover": "<Local pic>",
 
-    "Program_description": "text example",
+  "Program_description": "text example",
 
-    "available": "<true as a default boolean value>"
-
+  "available": "<true as a default boolean value>"
 }
 ```
 
-#### Success responce:
-##### Code 200
+##### Success response:
+
+##### code: **`200`**
+
 ```json
 {
-    "status": "created"
+  "status": "created"
 }
 ```
+
 #### Error responce :
-##### code 403
+
+##### code: **`403`**
+
 ```json
 {
-    "status": "Forbidden"
+  "status": "Forbidden"
 }
 ```
 
-#### - How to Edit a program
-##### - Method : Put
-##### - URL : 'api.ayat.com/v1/programs/{id}'
-##### - payload
+<hr/>
+
+#### Edit a program
+
+`api.ayat.com/v1/programs/{id}` **`PUT`**
+
+##### Payload
+
 ```json
 {
-    "JWT": "adfgv5erw85s3",
-    "user_public_id": "fs5cfew3csd",
-    "program_name": "name example",
+  "JWT": "adfgv5erw85s3",
+  "program_name": "name example",
 
-    "prerequisite": [
-        {
-            "type": "example"
-        },
-        {
-            "type": "example"
-        }
-        ],
-    "program_level": "<Difficulty>",
+  "prerequisite": [
+    {
+      "type": "example"
+    },
+    {
+      "type": "example"
+    }
+  ],
+  "program_level": "<Difficulty>",
 
-    "program_category": [
-        {
-            "type": "example"
-        },
-        {
-            "type": "example"
-        }
-    ],
+  "program_category": [
+    {
+      "type": "example"
+    },
+    {
+      "type": "example"
+    }
+  ],
 
-    "price": "$$$",
+  "price": "$$$",
 
-    "program_pic": "<Local Pic>",
+  "program_pic": "<Local Pic>",
 
-    "FAQ": [  
-        {
-            "question": "Text",
-            "answer": "Text"
-        },
-        {
-            "question": "Text",
-            "answer": "Text"
-        }
-    ],
+  "FAQ": [
+    {
+      "question": "Text",
+      "answer": "Text"
+    },
+    {
+      "question": "Text",
+      "answer": "Text"
+    }
+  ],
 
-    "program_cover": "<Local pic>",
+  "program_cover": "<Local pic>",
 
-    "Program_description": "text example",
+  "Program_description": "text example",
 
-    "available": "<true as a default boolean value>"
+  "available": "<true as a default boolean value>"
 }
 ```
+
 #### Success responce:
-code : 200
+
+code: **`200`**
+
 ```json
 {
-    "status": "edited"
+  "status": "edited"
 }
 ```
 
 #### Error responce:
-##### code: 403
-```json
-{
-    "status": "Forbidden"
-}
-```
 
-
-#### - How to Retrieve a program
-##### - Method : Get
-##### URL : 'api.ayat.com/v1/programs'
-##### - payload
+##### code: **`403`**
 
 ```json
 {
-    
+  "status": "Forbidden"
 }
 ```
+
+<hr/>
+
+#### How to Retrieve a program
+
+`api.ayat.com/v1/programs/{id}` **`GET`**
+
+##### Payload
+
+```json
+{}
+```
+
 #### Success responce:
-##### code 200
-```json
-{
-    "program_name": "name example",
 
-    "prerequisite": [
-        {
-            "type": "example"
-        },
-        {
-            "type": "example"
-        }
-        ],
-    "program_level": "<Difficulty>",
-
-    "program_category": [
-        {
-            "type": "example"
-        },
-        {
-            "type": "example"
-        }
-    ],
-
-    "price": "$$$",
-
-    "program_pic": "<Local Pic>",
-
-    "FAQ": [  
-        {
-            "question": "Text",
-            "answer": "Text"
-        },
-        {
-            "question": "Text",
-            "answer": "Text"
-        }
-    ],
-
-    "program_cover": "<Local pic>",
-
-    "Program_description": "text example",
-
-    "available": "<true as a default boolean value>"   
-}
-```
-#### Error responce:
-##### code: 404
-```json
-{
-    "status": "Content not found"
-}
-```
-
-#### - How to Delete a program
-##### - Method : Delete
-##### - URL : 'api.ayat.com/v1/programs/{id}'
-##### - payload
+##### code: **`200`**
 
 ```json
 {
-    "JWT": "adfgv5erw85s3",
-    "user_public_id": "fs5cfew3csd"
-}
-```
-#### Success responce:
-##### code 200:
+  "program_name": "name example",
 
-```json
-{
-    "status": "Deleted"
+  "prerequisite": [
+    {
+      "type": "example"
+    },
+    {
+      "type": "example"
+    }
+  ],
+  "program_level": "<Difficulty>",
+
+  "program_category": [
+    {
+      "type": "example"
+    },
+    {
+      "type": "example"
+    }
+  ],
+
+  "price": "$$$",
+
+  "program_pic": "<Local Pic>",
+
+  "FAQ": [
+    {
+      "question": "Text",
+      "answer": "Text"
+    },
+    {
+      "question": "Text",
+      "answer": "Text"
+    }
+  ],
+
+  "program_cover": "<Local pic>",
+
+  "Program_description": "text example",
+
+  "available": "<true as a default boolean value>"
 }
 ```
 
 #### Error responce:
-##### Error 403:
+
+##### code: **`404`**
 
 ```json
 {
-    "status": "Forbidden"
+  "status": "Content not found"
 }
 ```
 
+<hr/>
 
+#### Delete a program
+
+`api.ayat.com/v1/programs/{id}` **`DELETE`**
+
+##### Payload
+
+```json
+{
+  "JWT": "adfgv5erw85s3",
+}
+```
+
+#### Success responce:
+
+##### code: **`200`**
+
+```json
+{
+  "status": "Deleted"
+}
+```
+
+#### Error responce:
+
+##### code: **`403`**
+
+```json
+{
+  "status": "Forbidden"
+}
+```

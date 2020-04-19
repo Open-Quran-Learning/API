@@ -50,12 +50,14 @@ now, I can pay you a pizza.
 - [Lessons][]
 - [Quizzes][]
 - [Contacts][]
+- [Programs][]
 
 [users]: ./docs/users.md
 [courses]: ./docs/courses.md
 [lessons]: ./docs/lessons.md
 [quizzes]: ./docs/quizzes.md
 [contacts]: ./docs/contacts.md
+[programs]: ./docs/programs.md
 
 ### Duplicate resource codes
 
