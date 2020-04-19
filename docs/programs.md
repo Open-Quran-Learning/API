@@ -256,3 +256,45 @@ code: **`200`**
   "status": "Forbidden"
 }
 ```
+
+#### Subscribe to a program
+
+`api.ayat.com/v1/programs/{id}/enrollment` **`POST`**
+
+##### Payload
+
+```json
+{
+  "JWT": "adfgv5erw85s3",
+  "public_program_id": "{id}"
+}
+```
+
+#### Success responce:
+
+##### code: **`200`**
+
+```json
+{
+  "status": "subscribed"
+}
+```
+
+#### Error responce:
+
+##### code: **`409`**
+
+```json
+{
+  "error": "user already subscribed"
+}
+```
+
+or
+
+##### code: **`401`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
