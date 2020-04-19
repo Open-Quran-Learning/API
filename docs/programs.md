@@ -259,7 +259,7 @@ code: **`200`**
 
 #### Subscribe to a program
 
-`api.ayat.com/v1/programs/{id}/enrollment` **`POST`**
+`api.ayat.com/v1/programs/{id}/enroll` **`POST`**
 
 ##### Payload
 
