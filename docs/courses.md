@@ -18,7 +18,7 @@
 
 ##### Success Response:
 
-code: **`200`**
+##### code: **`200`**
 
 ```json
 {
@@ -28,7 +28,7 @@ code: **`200`**
 
 ##### Error Response:
 
-code: **`403`**
+##### code: **`403`**
 
 ```json
 {
@@ -52,7 +52,7 @@ code: **`403`**
 
 ##### Success Response:
 
-- Code: **`200`**
+##### code: **`200`**
 
 ```json
 {
@@ -62,7 +62,7 @@ code: **`403`**
 
 ##### Error Response:
 
-code: **`403`**
+##### code: **`403`**
 
 ```json
 {
@@ -90,7 +90,7 @@ code: **`403`**
 
 ##### Success Response:
 
-- Code: `200`
+##### code: `200`
 
 ```json
 {
@@ -108,7 +108,7 @@ or
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
 
 ```json
 {
@@ -133,7 +133,7 @@ or
 
 ##### Success Response:
 
-- Code: **`200`**
+##### code: **`200`**
 
 ```json
 {
@@ -143,7 +143,7 @@ or
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
 
 ```json
 {
@@ -167,7 +167,7 @@ or
 
 ##### Success Response:
 
-- Code: **`200`**
+##### code: **`200`**
 
 ```Json
 {
@@ -177,7 +177,7 @@ or
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
 
 ```json
 {
