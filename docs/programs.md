@@ -257,9 +257,54 @@ code: **`200`**
 }
 ```
 
+<hr />
+
 #### Subscribe to a program
 
 `api.ayat.com/v1/programs/{id}/enrollments` **`POST`**
+
+##### Payload
+
+```json
+{
+  "JWT": "adfgv5erw85s3",
+  "public_program_id": "{id}"
+}
+```
+
+#### Success responce:
+
+##### code: **`202`**
+
+```json
+{
+  "status": "enrolled"
+}
+```
+
+#### Error responce:
+
+```json
+{
+  "error": "<Duplicate resource codes: 5>"
+}
+```
+
+or
+
+##### code: **`401`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Cancel subscription to a program
+
+`api.ayat.com/v1/programs/{id}/enrollments` **`DELETE`**
 
 ##### Payload
 
@@ -276,17 +321,15 @@ code: **`200`**
 
 ```json
 {
-  "status": "subscribed"
+  "status": "success"
 }
 ```
 
 #### Error responce:
 
-##### code: **`409`**
-
 ```json
 {
-  "error": "user already subscribed"
+  "error": "<Duplicate resource codes: 6>"
 }
 ```
 
@@ -298,3 +341,4 @@ or
 {
   "error": "user is unauthorized"
 }
+```
