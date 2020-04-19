@@ -51,7 +51,7 @@ now, I can pay you a pizza.
 - [Quizzes][]
 - [Contacts][]
 - [Programs][]
-- [recitations][]
+- [Recitations][]
 
 [users]: ./docs/users.md
 [courses]: ./docs/courses.md
@@ -59,7 +59,7 @@ now, I can pay you a pizza.
 [quizzes]: ./docs/quizzes.md
 [contacts]: ./docs/contacts.md
 [programs]: ./docs/programs.md
-[recitations]: ./docs/recitations.md
+[Recitations]: ./docs/recitations.md
 
 ### Duplicate resource codes
 
