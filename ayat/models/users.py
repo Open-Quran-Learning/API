@@ -35,19 +35,20 @@ class User(db.Model):
 
     
     def __repr__(self):
-    	Info_text = (f'{self.__class__.__name__} Id: {self.user_id}.\n'
-    		f'{self.__class__.__name__} Name: {self.name}.\n'
-    		f'Public Id: {self.public_id}.\n'
-    		f'E-mail: {self.email}.\n'
-    		f'Country: {self.country_name}.\n'
-    		f'Phone Number: {self.phone_number}.\n'
-    		f'Profile Picture: {self.profile_picture}.\n'
-    		f'Birth Date: {self.birth_date}.\n'
-    		f'Gender: {self.gender}.\n'
-    		f'Password: {self.password}.\n'
-    		f'Registeration Date: {self.registeration_date}.\n'
-    		f'Activation: {self.is_activated}.'
-    		)
+    	Info_text = (f'{self.__class__.__name__} Id: {self.user_id}.\t'
+    		f'{self.__class__.__name__} Name: {self.name}.\t'
+    		f'Public Id: {self.public_id}.\t'
+    		f'E-mail: {self.email}.\t'
+    		f'Country: {self.country_name}.\t'
+    		f'Phone Number: {self.phone_number}.\t'
+    		f'Profile Picture: {self.profile_picture}.\t'
+    		f'Birth Date: {self.birth_date}.\t'
+    		f'Gender: {self.gender}.\t'
+    		f'Password: {self.password}.\t'
+    		f'Registeration Date: {self.registeration_date}.\t'
+    		f'Activation: {self.is_activated}.\t'
+            f'Type: {self.type}.\n')
+    		
 
     	return Info_text
 
@@ -76,9 +77,9 @@ class Guardian(db.Model):
     phone_number = db.Column(db.VARCHAR(15), unique=True, nullable=False)
 
     def __repr__(self):
-        Info_text = (f'Guardian Id: {self.guardian_id}.\n'
-            f'E-mail: {self.email}.\n'
-            f'Phone Number: {self.phone_number}.')
+        Info_text = (f'Guardian Id: {self.guardian_id}.\t'
+            f'E-mail: {self.email}.\t'
+            f'Phone Number: {self.phone_number}.\n')
 
         return Info_text
 
@@ -106,8 +107,8 @@ class Permission(db.Model):
     permission_name = db.Column(db.VARCHAR(50) , nullable=False)
 
     def __repr__(self):
-        Info_text = (f'Permission Id: {self.permission_id}.\n'
-            f'Permission Name: {self.permission_name}.')
+        Info_text = (f'Permission Id: {self.permission_id}.\t'
+            f'Permission Name: {self.permission_name}.\n')
 
         return Info_text
 
