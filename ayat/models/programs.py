@@ -48,7 +48,7 @@ class Program(db.Model):
     category = db.relationship('Category', secondary=program_category, backref=db.backref('program', lazy='dynamic'))
     courses = db.relationship('Course', backref=db.backref('program'))
     requirement = db.relationship("Requirement", backref=db.backref('program'))
-
+    program_enrollment = db.relationship("ProgramEnrollment", back_populates="program")
     prerequisites = db.relationship(
         'Program',
         secondary=program_prerequisite,

@@ -64,6 +64,8 @@ class Student(User):
     guardians = db.relationship('Guardian', secondary=Student_Guardian, backref=db.backref('student',lazy='dynamic'))
 
     recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
+    assessment_results = db.relationship("AssessmentResults", back_populates="student")
+    program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
 
     __mapper_args__ = {'polymorphic_identity':'student'}
 
@@ -96,7 +98,7 @@ Staff_Permission = db.Table('staff_permission', db.Model.metadata,
 class Staff(User):
     __tablename__ = "staff"
     staff_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    
+    assessment_results = db.relationship("AssessmentResults", back_populates="staff")
     permissions = db.relationship('Permission', secondary=Staff_Permission, backref=db.backref('staff',lazy='dynamic'))
 
     recitations = db.relationship('Recitation', backref=db.backref('staff'))
