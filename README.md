@@ -51,6 +51,7 @@ now, I can pay you a pizza.
 - [Quizzes][]
 - [Contacts][]
 - [Programs][]
+- [Recitations][]
 
 [users]: ./docs/users.md
 [courses]: ./docs/courses.md
@@ -58,6 +59,7 @@ now, I can pay you a pizza.
 [quizzes]: ./docs/quizzes.md
 [contacts]: ./docs/contacts.md
 [programs]: ./docs/programs.md
+[Recitations]: ./docs/recitations.md
 
 ### Duplicate resource codes
 
@@ -67,5 +69,8 @@ now, I can pay you a pizza.
 |  2   |    Phone already exists     |
 |  3   | Lesson order already exists |
 |  4   |    Course already exists    |
+|  5   |    User aleady subscribed   |
+|  6   |    User not enrolled        |
+|  7   |    Recitation already exist |
 
 <hr />

@@ -4,73 +4,6 @@
 
 > *Note: for `creating`, `updating` and `deleting` courses user must have `admin permissions.`*
 
-#### Retrieving program's courses
-
-`api.ayat.com/v1/programs/{id}/courses` **`GET`**
-
-##### Payload:
-
-```json
-{
-  "jwt": "32132143432432"
-}
-```
-
-##### Success Response:
-
-code: **`200`**
-
-```json
-{
-  "courses": [...]
-}
-```
-
-##### Error Response:
-
-code: **`403`**
-
-```json
-{
-  "error": "user is unauthorized"
-}
-```
-
-<hr />
-
-#### Retrieving a specific course's data
-
-`api.ayat.com/v1/programs/{id}/courses/{id}` **`GET`**
-
-##### Payload:
-
-```json
-{
-  "jwt": "32132143432432"
-}
-```
-
-##### Success Response:
-
-- Code: **`200`**
-
-```json
-{
-  //course data.
-}
-```
-
-##### Error Response:
-
-code: **`403`**
-
-```json
-{
-  "error": "user is unauthorized"
-}
-```
-
-<hr />
 
 #### Creating a new course in specific program
 
@@ -90,7 +23,7 @@ code: **`403`**
 
 ##### Success Response:
 
-- Code: `200`
+##### code: `201`
 
 ```json
 {
@@ -102,13 +35,13 @@ or
 
 ```Json
 {
-    "status":  "<Duplicate resource codes>"
+    "status":  "<Duplicate resource codes: 4>"
 }
 ```
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
 
 ```json
 {
@@ -133,7 +66,7 @@ or
 
 ##### Success Response:
 
-- Code: **`200`**
+##### code: **`200`**
 
 ```json
 {
@@ -143,7 +76,75 @@ or
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Retrieving program's courses
+
+`api.ayat.com/v1/programs/{id}/courses` **`GET`**
+
+##### Payload:
+
+```json
+{
+  "jwt": "32132143432432"
+}
+```
+
+##### Success Response:
+
+##### code: **`200`**
+
+```json
+{
+  "courses": [...]
+}
+```
+
+##### Error Response:
+
+##### code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Retrieving a specific course's data
+
+`api.ayat.com/v1/programs/{id}/courses/{id}` **`GET`**
+
+##### Payload:
+
+```json
+{
+  "jwt": "32132143432432"
+}
+```
+
+##### Success Response:
+
+##### code: **`200`**
+
+```json
+{
+  //course data.
+}
+```
+
+##### Error Response:
+
+##### code: **`403`**
 
 ```json
 {
@@ -167,7 +168,7 @@ or
 
 ##### Success Response:
 
-- Code: **`200`**
+##### code: **`200`**
 
 ```Json
 {
@@ -177,7 +178,7 @@ or
 
 ##### Error Response:
 
-- Code: **`403`**
+##### code: **`403`**
 
 ```json
 {

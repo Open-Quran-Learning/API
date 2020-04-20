@@ -256,3 +256,88 @@ code: **`200`**
   "status": "Forbidden"
 }
 ```
+
+<hr />
+
+#### Subscribe to a program
+
+`api.ayat.com/v1/programs/{id}/enrollments` **`POST`**
+
+##### Payload
+
+```json
+{
+  "JWT": "adfgv5erw85s3",
+  "public_program_id": "{id}"
+}
+```
+
+#### Success responce:
+
+##### code: **`202`**
+
+```json
+{
+  "status": "enrolled"
+}
+```
+
+#### Error responce:
+
+```json
+{
+  "error": "<Duplicate resource codes: 5>"
+}
+```
+
+or
+
+##### code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
+
+<hr />
+
+#### Cancel subscription to a program
+
+`api.ayat.com/v1/programs/{id}/enrollments` **`DELETE`**
+
+##### Payload
+
+```json
+{
+  "JWT": "adfgv5erw85s3",
+}
+```
+
+#### Success responce:
+
+##### code: **`200`**
+
+```json
+{
+  "status": "success"
+}
+```
+
+#### Error responce:
+
+```json
+{
+  "error": "<Duplicate resource codes: 6>"
+}
+```
+
+or
+
+##### code: **`403`**
+
+```json
+{
+  "error": "user is unauthorized"
+}
+```
