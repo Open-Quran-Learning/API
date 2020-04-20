@@ -2,12 +2,12 @@
 
 <hr />
 
-> *Note: for `creating`, `updating` and `deleting` Recitation user must have `admin permissions.`*
+> *Note: for `creating`, `updating` and `deleting` recitation user must have `admin permissions.`*
 
 
 #### Creating a new recitation
 
-`api.ayat.com/v1/recitation` **`POST`**
+`api.ayat.com/v1/recitations` **`POST`**
 
 ##### Payload:
 
@@ -50,9 +50,9 @@ or
 
 <hr />
 
-#### Updating course's data
+#### Updating recitation's data
 
-`api.ayat.com/v1/recitation/{id}` **`PUT`**
+`api.ayat.com/v1/recitations/{id}` **`PUT`**
 
 ##### Payload:
 
@@ -88,7 +88,7 @@ or
 
 #### Retrieving recitations
 
-`api.ayat.com/v1/recitation/` **`GET`**
+`api.ayat.com/v1/recitations/` **`GET`**
 
 ##### Payload:
 
@@ -120,14 +120,13 @@ or
 
 #### Retrieving a specific recitation's data
 
-`api.ayat.com/v1/reciation/{id}` **`GET`**
+`api.ayat.com/v1/recitations/{id}` **`GET`**
 
 ##### Payload:
 
 ```json
 {
-  "jwt": "32132143432432",
-  "public_recitation_id": {id}
+  "jwt": "32132143432432"
 }
 ```
 
@@ -143,7 +142,7 @@ or
 
 ##### Error Response:
 
-##### code: **`401`**
+##### code: **`403`**
 
 ```json
 {
@@ -165,7 +164,7 @@ or
 
 #### Deleting a recitation
 
-`api.ayat.com/v1/recitation/{id}` **`DELETE`**
+`api.ayat.com/v1/recitations/{id}` **`DELETE`**
 
 ##### Payload:
 
@@ -199,14 +198,13 @@ or
 
 #### Subscribe to a recitation
 
-`api.ayat.com/v1/recitation/{id}/enrollments` **`POST`**
+`api.ayat.com/v1/recitations/{id}/enrollments` **`POST`**
 
 ##### Payload
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
-  "public_precitation_id": "{id}"
+  "JWT": "adfgv5erw85s3"
 }
 ```
 
@@ -230,7 +228,7 @@ or
 
 or
 
-##### code: **`401`**
+##### code: **`403`**
 
 ```json
 {
@@ -242,14 +240,13 @@ or
 
 #### Cancel subscription to a recitation
 
-`api.ayat.com/v1/recitation/{id}/enrollments` **`DELETE`**
+`api.ayat.com/v1/recitations/{id}/enrollments` **`DELETE`**
 
 ##### Payload
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}"
+  "JWT": "adfgv5erw85s3"
 }
 ```
 
@@ -273,88 +270,11 @@ or
 
 or
 
-##### code: **`401`**
-
-```json
-{
-  "error": "user is unauthorized"
-}
-```
-
-<hr />
-
-#### Retrieve all students enrolled in a specific recitation
-
-`api.ayat.com/v1/recitation/{id}/students` **`GET`**
-
-##### Payload
-
-```json
-{
-  "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}"
-}
-```
-
-#### Success responce:
-
-##### code: **`200`**
-
-```json
-{
-  "status": "success"
-}
-```
-
-#### Error responce:
 ##### code: **`403`**
 
 ```json
 {
   "error": "user is unauthorized"
-}
-```
-
-<hr />
-
-#### Delete a student enrolled in a specific recitation
-
-`api.ayat.com/v1/recitation/{id}/students/{id}` **`DELETE`**
-
-##### Payload
-
-```json
-{
-  "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}",
-  "student_id": "{id}"
-
-}
-```
-
-#### Success responce:
-
-##### code: **`200`**
-
-```json
-{
-  "status": "success"
-}
-```
-
-#### Error responce:
-##### code: **`403`**
-
-```json
-{
-  "error": "user is unauthorized"
-}
-```
-or
-##### code: **`404`**
-```json
-{
-    "error": "user not found"
 }
 ```
 
@@ -362,14 +282,15 @@ or
 
 #### Create new assignment in a specific recitation
 
-`api.ayat.com/v1/recitation/{id}/assignments` **`POST`**
+`api.ayat.com/v1/recitations/{id}/assignments` **`POST`**
 
 ##### Payload
 
 ```json
 {
   "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}"
+  "student_ids": [student ids]
+  // Data to be added
 
 }
 ```
@@ -397,15 +318,14 @@ or
 
 #### update an assignment in a specific recitation
 
-`api.ayat.com/v1/recitation/{id}/assignments/{id}` **`PUT`**
+`api.ayat.com/v1/recitations/{id}/assignments/{id}` **`PUT`**
 
 ##### Payload
 
 ```json
 {
   "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}",
-  "assignment_id": "{id}"
+  // assignment's data to be updated
 
 }
 ```
@@ -432,17 +352,14 @@ or
 <hr />
 
 #### User gets an assignment from a specific recitation
-
-`api.ayat.com/v1/recitation/{id}/assignments/{id}` **`GET`**
+#### TODO
+`api.ayat.com/v1/recitations/{id}/assignments/filter` **`GET`**
 
 ##### Payload
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}",
-  "assignment_id": "{id}"
-
+  "JWT": "adfgv5erw85s3"
 }
 ```
 
@@ -457,7 +374,7 @@ or
 ```
 
 #### Error responce:
-##### code: **`401`**
+##### code: **`403`**
 
 ```json
 {
@@ -469,16 +386,13 @@ or
 
 #### Delete an assignment in a specific recitation
 
-`api.ayat.com/v1/recitation/{id}/assignments/{id}` **`DELETE`**
+`api.ayat.com/v1/recitations/{id}/assignments/{id}` **`DELETE`**
 
 ##### Payload
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
-  "public_recitation_id": "{id}",
-  "assignment_id": "{id}"
-
+  "JWT": "adfgv5erw85s3"
 }
 ```
 

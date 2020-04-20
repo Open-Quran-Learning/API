@@ -292,7 +292,7 @@ code: **`200`**
 
 or
 
-##### code: **`401`**
+##### code: **`403`**
 
 ```json
 {
@@ -311,7 +311,6 @@ or
 ```json
 {
   "JWT": "adfgv5erw85s3",
-  "public_program_id": "{id}"
 }
 ```
 
@@ -335,7 +334,7 @@ or
 
 or
 
-##### code: **`401`**
+##### code: **`403`**
 
 ```json
 {
