@@ -1,6 +1,5 @@
 from ayat import db
 
-from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
@@ -18,7 +17,7 @@ class RecitationEnrollment(db.Model):
     join_date = db.Column(db.TIMESTAMP, nullable= False)
     is_accepted = db.Column(db.Boolean, nullable= False)
 
-    UniqueConstraint(student_id, recitation_id, assignment_id)
+    db.UniqueConstraint(student_id, recitation_id, assignment_id)
 
     student = db.relationship('Student', back_populates='recitation_enrollment')
     recitation = db.relationship('Recitation', back_populates='recitation_enrollment')
@@ -84,7 +83,16 @@ class Assignment(db.Model):
             )
 
         return Info_text
-  
+
+
+class RecitationReport(db.Model):
+    __tablename__ = 'recitation_report'
+    recitation_report_id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, nullable=False)
+    recitation_id = db.Column(db.Integer, nullable=False)
+    assignment_id = db.Column(db.Integer, nullable=False)
+    grade = db.Column(db.SMALLINT, nullable=False)
+    is_absent = db.Column(db.Boolean, nullable=False)
 
 ###############################################################################################################################################################################################################################################################
 ### TESTING CODE IN PYTHON SHELL
