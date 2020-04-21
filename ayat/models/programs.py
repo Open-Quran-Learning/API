@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import UUID
-# import uuid
+import uuid
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from ayat import db
@@ -31,7 +31,7 @@ program_prerequisite = db.Table('program_prerequisite',  db.Model.metadata,
 class Program(db.Model):
     __tablename__ = "program"
     program_id = db.Column(db.SMALLINT, primary_key=True)
-    # public_program_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
+    public_program_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
     program_name = db.Column(db.VARCHAR(60), nullable=False)
     difficulty_level = db.Column(db.VARCHAR(30), nullable=False)
     price = db.Column(db.Numeric, nullable=False)
@@ -40,8 +40,8 @@ class Program(db.Model):
     program_cover = db.Column(db.VARCHAR(20), nullable=False)
     program_description = db.Column(db.VARCHAR(255), nullable=False)
     available = db.Column(db.Boolean, nullable=False)
-    # start_date = db.Column(db.Date, nullable=False)
-    # end_date = db.Column(db.Date, nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
     requirement_id = db.Column(db.SMALLINT, db.ForeignKey("requirement.requirement_id"), nullable=False)
     skills = db.relationship('Skill', secondary=program_skill, backref=db.backref('program', lazy='dynamic'))
     faqs = db.relationship('Faq', secondary=program_faqs, backref=db.backref('program', lazy='dynamic'))
@@ -59,7 +59,7 @@ class Program(db.Model):
 
     def __repr__(self):
         info_text = (f'program id: {self.program_id}.\t'
-                    #  f'public program id: {self.public_program_id}.\t'
+                     f'public program id: {self.public_program_id}.\t'
                      f'program name: {self.program_name}.\t'
                      f'difficulty level: {self.difficulty_level}.\t'
                      f'price: {self.price}.\t'
@@ -68,8 +68,8 @@ class Program(db.Model):
                      f'program description: {self.program_description}.\t'
                      f'price: {self.price}.\t'
                      f'available: {self.available}.\t'
-                    #  f'start date: {self.start_date}.\t'
-                    #  f'end date: {self.end_date}.\t'
+                     f'start date: {self.start_date}.\t'
+                     f'end date: {self.end_date}.\t'
                      f'requirement id: {self.requirement_id}.\n')
 
         return info_text
@@ -104,7 +104,7 @@ class Faq(db.Model):
 class Course(db.Model):
     __tablename__ = "course"
     course_id = db.Column(db.SMALLINT, primary_key=True)
-    # public_course_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
+    public_course_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
     program_id = db.Column(db.SMALLINT, db.ForeignKey("program.program_id"), nullable=False)
     course_name = db.Column(db.VARCHAR(60), nullable=False)
     course_description = db.Column(db.VARCHAR(255))  # may be deleted
@@ -113,7 +113,7 @@ class Course(db.Model):
 
     def __repr__(self):
         info_text = (f'course id: {self.course_id}.\t'
-                     # f'public course id: {self.public_course_id}.\t'
+                     f'public course id: {self.public_course_id}.\t'
                      f'program id: {self.program_id}.\t'
                      f'course name: {self.course_name}.\t'
                      f'course description: {self.course_description}.\t'
@@ -124,7 +124,7 @@ class Course(db.Model):
 class Lesson(db.Model):
     __tablename__ = "lesson"
     lesson_id = db.Column(db.SMALLINT, primary_key=True)
-    # public_lesson_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
+    public_lesson_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True, nullable=False)
     course_id = db.Column(db.SMALLINT, db.ForeignKey("course.course_id"), nullable=False)
     lesson_name = db.Column(db.VARCHAR(60), nullable=False)
     lesson_description = db.Column(db.VARCHAR(255))  # may be deleted
