@@ -127,7 +127,7 @@ def delete_user(current_user,public_id):
     return jsonify({'message':'The user has been deleted!'})
 
 
-@app.route('v1/users/', methods=['POST'])
+@app.route('/v1/users', methods=['POST'])
 def login_or_create():
 
     data = request.get_json()
