@@ -169,10 +169,15 @@ def login_or_create():
         # checking if user exists or not 
         user_email = data['email']
         user = User.query.filter_by(email=user_email).first()
-
-       
         if user is not None:
-            return jsonify({"status":  "<Duplicate resource codes> "})
+            return jsonify({"status":  "Email already exists"}), 1
+
+
+        user_phone = data['phone']
+        user = User.query.filter_by(phone=user_phone).first()
+        if user is not None:
+            return jsonify({"status":  "Phone already exists"}), 2
+
 
 
         hashed_password = generate_password_hash(data['password'], method='sha256')
@@ -190,6 +195,7 @@ def login_or_create():
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
                         # setting up the type
+                        type = ['user']
                         )
 
         db.session.add(new_user)
