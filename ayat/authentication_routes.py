@@ -1,12 +1,9 @@
 from flask import Flask, request, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-
 from functools import wraps
 from ayat.models.users import *
 from ayat import app, db
-
-app.config['SECRET_KEY'] = 'thisissecret'
 
 
 def token_required(f):
@@ -65,7 +62,7 @@ def get_one_user(current_user, public_id):
 
     user = User.query.filter_by(public_id=public_id).first()
     if not user:
-        return jsonify({'message': 'No user found!'})
+        return jsonify({'message': 'No user found!'}), 404
 
     user = {
         'public_id': user.public_id,
@@ -92,20 +89,28 @@ def promote_user(current_user,public_id):
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
-        return jsonify({'message': 'No user found!'})
+        return jsonify({'message': 'No user found!'}), 404
 
     data = request.get_json()
     if current_user['publid_id'] == str(public_id):
-        user.name = data['name']
-        user.email = data['email']
-        user.password = generate_password_hash(data['password'], method='sha256')
-        user.country_name = data['country_name']
-        user.profile_picture = data['profile_picture']
-        user.phone_number = data['phone_number']
-        user.birth_date = data['birth_date']
+        if data['name']:
+            user.name = data['name']
+        if data['email']:
+            user.email = data['email']
+        if data['password']:
+            user.password = generate_password_hash(data['password'], method='sha256')
+        if data['country_name']:
+            user.country_name = data['country_name']
+        if data['profile_picture']:
+            user.profile_picture = data['profile_picture']
+        if data['phone_number']:
+            user.phone_number = data['phone_number']
+        if data['birth_date']:
+            user.birth_date = data['birth_date']
 
     if current_user['type'] == 'staff':
-        user.type = data['type']
+        if data['type']:
+            user.type = data['type']
 
     db.session.commit()
     return jsonify({'message': 'The user has been promoted!'})
@@ -130,8 +135,8 @@ def delete_user(current_user,public_id):
 @app.route('/v1/users', methods=['POST'])
 def login_or_create():
 
-    data = request.get_json()
-
+    data = request.get_json(force=True)
+    print(data)
     # login checking
     if data['action'] == 'login':
 
@@ -144,12 +149,13 @@ def login_or_create():
             return jsonify({"error": "user is unauthorized"}), 403
 
         if check_password_hash(user.password,user_password):
-            token= jwt.encode({'public_id': user.public_id},app.config['SECRET_KEY'])
+            token= jwt.encode({'public_id': user.public_id,
+                               'email': user.email,
+                               'type': user.type},app.config['SECRET_KEY'])
             return jsonify({
 
                             'token' : token.decode('UTF-8'),
                             'public_id' : user.public_id,
-
                             'name' : user.name,
                             'email' : user.email ,
                             'country_name' : user.country_name ,
@@ -170,20 +176,19 @@ def login_or_create():
         user_email = data['email']
         user = User.query.filter_by(email=user_email).first()
         if user is not None:
-            return jsonify({"status":  "Email already exists"}), 1
+            return jsonify({"status":  "1"})
 
 
         user_phone = data['phone']
         user = User.query.filter_by(phone=user_phone).first()
         if user is not None:
-            return jsonify({"status":  "Phone already exists"}), 2
+            return jsonify({"status":  "2"})
 
 
 
         hashed_password = generate_password_hash(data['password'], method='sha256')
 
         new_user = User(
-                        user_id = data['user_id'], ## ??????????
                         name = data['full_name'],
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
@@ -201,11 +206,4 @@ def login_or_create():
         db.session.add(new_user)
         db.session.commit()
         return jsonify({'status' : 'created'})
-
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
 
