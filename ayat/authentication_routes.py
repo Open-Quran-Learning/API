@@ -157,7 +157,7 @@ def login_or_create():
                             'profile_picture' : user.profile_picture,
                             'birth_date' : user.birth_date ,
                             'gender' : user.gender ,
-            })
+            }),200
         
 
         return jsonify({"error": "user is unauthorized"}), 403
@@ -195,12 +195,12 @@ def login_or_create():
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
                         # setting up the type
-                        type = ['user']
+                        type = data['type']
                         )
 
         db.session.add(new_user)
         db.session.commit()
-        return jsonify({'status' : 'created'})
+        return jsonify({'status' : 'created'}),200
 
 
 
