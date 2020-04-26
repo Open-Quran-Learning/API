@@ -5,8 +5,11 @@ import jwt
 from functools import wraps
 from ayat.models.users import *
 from ayat import app, db
+import os
 
-app.config['SECRET_KEY'] = 'thisissecret'
+HASHINGMETHOD = os.environ.get('HASHINGMETHOD')
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 
 def token_required(f):
@@ -104,7 +107,7 @@ def promote_user(current_user,public_id):
     if current_user['publid_id'] == str(public_id):
         user.name = data['name']
         user.email = data['email']
-        user.password = generate_password_hash(data['password'], method='sha256')
+        user.password = generate_password_hash(data['password'], method= HASHINGMETHOD)
         user.country_name = data['country_name']
         user.profile_picture = data['profile_picture']
         user.phone_number = data['phone_number']
@@ -186,7 +189,7 @@ def login_or_create():
 
 
 
-        hashed_password = generate_password_hash(data['password'], method='sha256')
+        hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
 
         new_user = User(
                         user_id = data['user_id'], ## ??????????
