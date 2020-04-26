@@ -8,3 +8,4 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 from ayat.models import models
+from ayat import authentication_routes  

@@ -30,6 +30,12 @@ def token_required(f):
     return decorated
 
 
+
+@app.route('/')
+def index():
+    return 'Welcome to Ayat'
+
+
 @app.route('/v1/users', methods=['GET'])
 @token_required
 def get_all_users(current_user):
