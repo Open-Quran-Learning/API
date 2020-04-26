@@ -74,3 +74,6 @@ now, I can pay you a pizza.
 |  7   |    Recitation already exist |
 
 <hr />
+
+## Link to ayat-quran API
+https://ayat-quran.herokuapp.com/
