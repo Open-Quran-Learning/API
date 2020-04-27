@@ -148,6 +148,9 @@ def login_or_create():
     data = request.get_json()
 
     # login checking
+    if data['action'] is None:
+        return jsonify({"error": "user is unauthorized"}), 403
+
     if data['action'] == 'login':
 
         user_email = data['email']
