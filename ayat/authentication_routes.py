@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-
+from flask_cors import CORS, cross_origin
 from functools import wraps
 from ayat.models.users import *
 from ayat import app, db
@@ -40,6 +40,7 @@ def index():
 
 
 @app.route('/v1/users', methods=['GET'])
+@cross_origin()
 @token_required
 def get_all_users(current_user):
     if not current_user['type'] == 'staff':
@@ -66,6 +67,7 @@ def get_all_users(current_user):
 
 
 @app.route('/v1/users/<public_id>', methods=['GET'])
+@cross_origin()
 @token_required
 def get_one_user(current_user, public_id):
 
@@ -94,6 +96,7 @@ def get_one_user(current_user, public_id):
 
 
 @app.route('/v1/users/<public_id>',methods=['PUT'])
+@cross_origin()
 @token_required
 def promote_user(current_user,public_id):
     if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
@@ -122,6 +125,7 @@ def promote_user(current_user,public_id):
 	
 
 @app.route('/v1/users/<public_id>',methods=['DELETE'])
+@cross_origin()
 @token_required
 def delete_user(current_user,public_id):
     if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
@@ -137,6 +141,7 @@ def delete_user(current_user,public_id):
 
 
 @app.route('/v1/users', methods=['POST'])
+@cross_origin()
 def login_or_create():
 
     data = request.get_json()
