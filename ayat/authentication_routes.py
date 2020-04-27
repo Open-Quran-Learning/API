@@ -35,6 +35,7 @@ def token_required(f):
 
 
 @app.route('/')
+@cross_origin()
 def index():
     return 'Welcome to Ayat'
 
