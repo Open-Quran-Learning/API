@@ -149,77 +149,78 @@ def login_or_create():
 
     # login checking
     print(data)
-    if data['action'] is None:
-        return jsonify({"error": "user is unauthorized"}), 403
+    return jsonify({'status' : 'created'}),200
+    # if data['action'] is None:
+    #     return jsonify({"error": "user is unauthorized"}), 403
 
-    if data['action'] == 'login':
+    # if data['action'] == 'login':
 
-        user_email = data['email']
-        user_password = data['password']
+    #     user_email = data['email']
+    #     user_password = data['password']
 
-        user = User.query.filter_by(email=user_email).first()
+    #     user = User.query.filter_by(email=user_email).first()
 
-        if not user:
-            return jsonify({"error": "user is unauthorized"}), 403
+    #     if not user:
+    #         return jsonify({"error": "user is unauthorized"}), 403
 
-        if check_password_hash(user.password,user_password):
-            token= jwt.encode({'public_id': user.public_id},app.config['SECRET_KEY'])
-            return jsonify({
+    #     if check_password_hash(user.password,user_password):
+    #         token= jwt.encode({'public_id': user.public_id},app.config['SECRET_KEY'])
+    #         return jsonify({
 
-                            'token' : token.decode('UTF-8'),
-                            'public_id' : user.public_id,
+    #                         'token' : token.decode('UTF-8'),
+    #                         'public_id' : user.public_id,
 
-                            'name' : user.name,
-                            'email' : user.email ,
-                            'country_name' : user.country_name ,
-                            'phone_number' : user.phone_number ,
-                            'profile_picture' : user.profile_picture,
-                            'birth_date' : user.birth_date ,
-                            'gender' : user.gender ,
-            }),200
+    #                         'name' : user.name,
+    #                         'email' : user.email ,
+    #                         'country_name' : user.country_name ,
+    #                         'phone_number' : user.phone_number ,
+    #                         'profile_picture' : user.profile_picture,
+    #                         'birth_date' : user.birth_date ,
+    #                         'gender' : user.gender ,
+    #         }),200
         
 
-        return jsonify({"error": "user is unauthorized"}), 403
+    #     return jsonify({"error": "user is unauthorized"}), 403
 
-    # creating a new user
+    # # creating a new user
 
-    if data['action'] == 'register' :
+    # if data['action'] == 'register' :
 
-        # checking if user exists or not 
-        user_email = data['email']
-        user = User.query.filter_by(email=user_email).first()
-        if user is not None:
-            return jsonify({"status":  "Email already exists"}), 1
-
-
-        user_phone = data['phone']
-        user = User.query.filter_by(phone=user_phone).first()
-        if user is not None:
-            return jsonify({"status":  "Phone already exists"}), 2
+    #     # checking if user exists or not 
+    #     user_email = data['email']
+    #     user = User.query.filter_by(email=user_email).first()
+    #     if user is not None:
+    #         return jsonify({"status":  "Email already exists"}), 1
 
 
+    #     user_phone = data['phone']
+    #     user = User.query.filter_by(phone=user_phone).first()
+    #     if user is not None:
+    #         return jsonify({"status":  "Phone already exists"}), 2
 
-        hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
 
-        new_user = User(
-                        user_id = data['user_id'], ## ??????????
-                        name = data['full_name'],
-                        public_id=str(uuid.uuid4()),
-                        email = data['email'],
-                        country_name = data['country'],
-                        phone_number = data['phone'],
-                        profile_picture = data['profile_pic'],
-                        birth_date = data['birth_date'],
-                        gender = data['gender'],
-                        password=hashed_password,
-                        registeration_date = data['registeration_date'],
-                        # setting up the type
-                        type = data['type']
-                        )
 
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify({'status' : 'created'}),200
+    #     hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
+
+    #     new_user = User(
+    #                     user_id = data['user_id'], ## ??????????
+    #                     name = data['full_name'],
+    #                     public_id=str(uuid.uuid4()),
+    #                     email = data['email'],
+    #                     country_name = data['country'],
+    #                     phone_number = data['phone'],
+    #                     profile_picture = data['profile_pic'],
+    #                     birth_date = data['birth_date'],
+    #                     gender = data['gender'],
+    #                     password=hashed_password,
+    #                     registeration_date = data['registeration_date'],
+    #                     # setting up the type
+    #                     type = data['type']
+    #                     )
+
+    #     db.session.add(new_user)
+    #     db.session.commit()
+    #     return jsonify({'status' : 'created'}),200
 
 
 
