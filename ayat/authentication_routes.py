@@ -148,6 +148,9 @@ def login_or_create():
     data = request.get_json()
 
     # login checking
+    print('this is request')
+    print(request)
+    print('this is data')
     print(data)
     # if not data['action'] :
     #     return jsonify({"error": "user is unauthorized"}), 403
