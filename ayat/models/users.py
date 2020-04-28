@@ -65,7 +65,7 @@ class Student(User):
 
     recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
     # assessment_results = db.relationship("AssessmentResults", back_populates="student")
-    program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
+    # program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
 
     __mapper_args__ = {'polymorphic_identity':'student'}
 
