@@ -149,8 +149,8 @@ def login_or_create():
 
     # login checking
     print(data)
-    if not data['action'] :
-        return jsonify({"error": "user is unauthorized"}), 403
+    # if not data['action'] :
+    #     return jsonify({"error": "user is unauthorized"}), 403
 
     if data['action'] == 'login':
 
