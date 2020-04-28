@@ -63,7 +63,7 @@ class Student(User):
     student_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     guardians = db.relationship('Guardian', secondary=Student_Guardian, backref=db.backref('student',lazy='dynamic'))
 
-    recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
+    # recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
     # assessment_results = db.relationship("AssessmentResults", back_populates="student")
     # program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
 
