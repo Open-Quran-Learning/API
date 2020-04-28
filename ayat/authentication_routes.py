@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from flask_cors import CORS, cross_origin
 from functools import wraps
-from ayat.models import *
+from ayat.models.users import *
 from ayat import app, db
 import os
 
@@ -149,7 +149,7 @@ def login_or_create():
 
     # login checking
     print(data)
-    if data['action'] is None:
+    if not data['action'] :
         return jsonify({"error": "user is unauthorized"}), 403
 
     if data['action'] == 'login':
