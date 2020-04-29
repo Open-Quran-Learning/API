@@ -63,14 +63,31 @@ def retrieve_program(public_id):
     
     #### ??????
     prerequisites = current_program.prerequisites
+    prerequisite_list = []
+    for prerequisite in prerequisites:
+        prerequisite_list.append({"name": prerequisite.program_name})
+
+
+    program_categories = current_program.category
+    category_list = []
+    for category in program_categories:
+        category_list.append({"type": category.category_name})
+    
+    program_faqs = current_program.faqs
+    faqs_list = []
+    for faq in program_faqs:
+        category_list.append({"type": category.category_name})
+
+
+
 
 
     return jsonify({
 
                     'program_name':current_program.program_name,
-                    'prerequisite' : prerequisites, 
+                    'prerequisite' : prerequisite_list, 
                     'program_level' : current_program.difficulty_level,
-                    'program_category': '',
+                    'program_category': category_list,
                     'price': current_program.price,
                     'program_pic' : current_program.program_picture,
                     'FAQ' : '',
