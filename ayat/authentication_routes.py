@@ -196,7 +196,7 @@ def login_or_create():
 
 
         user_phone = data['phone']
-        user = User.query.filter_by(phone=user_phone).first()
+        user = User.query.filter_by(phone_number=user_phone).first()
         if user is not None:
             return jsonify({"status":  "Phone already exists"}), 2
 
@@ -210,7 +210,7 @@ def login_or_create():
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
                         country_name = data['country'],
-                        phone_number = data['phone_number'],
+                        phone_number = data['phone'],
                         profile_picture = data['profile_pic'],
                         birth_date = data['birth_date'],
                         gender = data['gender'],
