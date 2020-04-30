@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from flask_cors import CORS, cross_origin
+from flask_cors import  cross_origin
 from functools import wraps
 from ayat.models.users import * 
 from ayat import app, db

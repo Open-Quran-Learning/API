@@ -7,11 +7,16 @@ import jwt
 from ayat.models.programs import *
 from ayat.models.users import *
 from ayat.models.assessments import *
+
 from ayat.authentication_routes import  token_required
 from ayat import app, db
 from datetime import  date
 
+from flask_cors import  cross_origin
+
+
 @app.route('/v1/programs', methods=['POST'])
+@cross_origin()
 @token_required
 def create_program(current_user):
 
@@ -33,10 +38,12 @@ def create_program(current_user):
                             # ######
 
     )
+    db.session.add(new_program)
+
     new_program_prerequisites = data['prerequisite']
+
     for prerequisite in new_program_prerequisites:
-        
-        new_program.prerequisites.append(prerequisite) 
+        new_program.prerequisites.append(prerequisite['name']) 
 
 
     new_program_categories = data['program_category']
@@ -60,6 +67,7 @@ def create_program(current_user):
 
 
 @app.route('/v1/programs/<public_id>', methods=['PUT'])
+@cross_origin()
 @token_required
 def edit_program(current_user):
 
@@ -107,6 +115,7 @@ def edit_program(current_user):
 
 
 @app.route('/v1/programs/<public_id>', methods=['GET'])
+@cross_origin()
 def retrieve_program(public_id):
 
     current_program = Program.query.filter_by(public_program_id=public_id).first()
@@ -147,9 +156,10 @@ def retrieve_program(public_id):
                     'Program_description' : current_program.program_description,
                     'available' : current_program.available,
 
-    })
+    }),200
 
 @app.route('/v1/programs/<public_id>', methods=['DELETE'])
+@cross_origin()
 @token_required
 def delete_program(current_user, public_id):
 
@@ -166,6 +176,7 @@ def delete_program(current_user, public_id):
 
 
 @app.route('/v1/programs/<public_program_id>/enrollments',methods=['POST'])
+@cross_origin()
 @token_required
 def subscribe_to_program(current_user,public_program_id):
     enrolled = ProgramEnrollment.query.filter_by(id=public_program_id, user_id=current_user['public_id']).first()
@@ -174,15 +185,18 @@ def subscribe_to_program(current_user,public_program_id):
     new_program_enrollment =ProgramEnrollment(program_id=public_program_id,student_id=current_user['publid_id'],is_accepted=True,join_date=date.today().strftime("%Y-%m-%d"))
     db.session.add(new_program_enrollment)
     db.session.commit()
-    return jsonify({'status' : "enrolled"})
+    return jsonify({'status' : "enrolled"}),200
     
 
 @app.route('/v1/programs/<public_program_id>/enrollments',methods=['DELETE'])
+@cross_origin()
 @token_required
 def delete_program_enrollment(current_user,public_program_id):
+
     enrolled = ProgramEnrollment.query.filter_by(program_id=public_program_id, student_id=current_user['public_id']).first()
     if not enrolled:
-        return jsonify({'error': 'User not enrolled'})
+        return jsonify({'error': 'user not enrolled'}),403
 
     db.session.delete(enrolled)
     db.session.commit()
+    return jsonify({'status': 'success'}),200
