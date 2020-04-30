@@ -14,7 +14,7 @@ class AssessmentResults(db.Model):
     grade = db.Column(db.SMALLINT, nullable=False)
 
     db.UniqueConstraint(exam_id, student_id, staff_id)
-    student = db.relationship("Student", back_populates='assessmentResults')
+    student = db.relationship("Student")
     exam = db.relationship("Exam")
     staff = db.relationship("Staff")
 
@@ -93,7 +93,7 @@ class ProgramEnrollment(db.Model):
     join_date = db.Column(db.Date, nullable=False)
 
     db.UniqueConstraint(student_id, program_id)
-    student = db.relationship("Student",back_populates='programEnrollment')
+    student = db.relationship("Student")
     program = db.relationship("Program")
 
     def __repr__(self):
