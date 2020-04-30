@@ -2,6 +2,7 @@
 from ayat.__init__ import db
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSON
 import uuid
+from users import *
 
 
 class AssessmentResults(db.Model):
