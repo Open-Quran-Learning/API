@@ -43,7 +43,8 @@ def create_program(current_user):
     new_program_prerequisites = data['prerequisite']
 
     for prerequisite in new_program_prerequisites:
-        new_program.prerequisites.append(prerequisite['name']) 
+        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name'])
+        new_program.prerequisites.append(new_program_prerequisite) 
 
 
     new_program_categories = data['program_category']
@@ -92,8 +93,8 @@ def edit_program(current_user):
     new_program_prerequisites = data['prerequisite']
     for prerequisite in new_program_prerequisites:
         
-        new_program.prerequisites.append(prerequisite) 
-
+        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name'])
+        new_program.prerequisites.append(new_program_prerequisite) 
 
     new_program_categories = data['program_category']
     for category in new_program_categories:
