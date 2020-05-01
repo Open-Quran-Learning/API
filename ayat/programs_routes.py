@@ -1,9 +1,4 @@
 from flask import  request, jsonify
-# from werkzeug.security import generate_password_hash, check_password_hash
-
-# you need to install jwt >> using >>> pip install jwt 
-
-# from functools import wraps
 from ayat.models.programs import *
 from ayat.models.users import *
 from ayat.models.assessments import *
