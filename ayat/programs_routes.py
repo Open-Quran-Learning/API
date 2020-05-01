@@ -1,6 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import  request, jsonify
 # from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
+
 # you need to install jwt >> using >>> pip install jwt 
 
 # from functools import wraps
@@ -38,24 +38,28 @@ def create_program(current_user):
                             # ######
 
     )
+
     db.session.add(new_program)
 
     new_program_prerequisites = data['prerequisite']
 
     for prerequisite in new_program_prerequisites:
-        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name'])
+        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name']).first()
         new_program.prerequisites.append(new_program_prerequisite) 
 
 
     new_program_categories = data['program_category']
+
     for category in new_program_categories:
         new_category = Category(category_name = category['type'])
         db.session.add(new_category)
         new_program.category.append(new_category)
 
+
     new_program_faqs = data['FAQ']
+
     for faq in new_program_faqs:
-        new_faq = Faq(question = faq['question'] , answer = 'answer')
+        new_faq = Faq(question = faq['question'] , answer = faq['answer'])
         db.session.add(new_faq)
         new_program.category.append(new_faq)
 
@@ -93,7 +97,7 @@ def edit_program(current_user):
     new_program_prerequisites = data['prerequisite']
     for prerequisite in new_program_prerequisites:
         
-        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name'])
+        new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name']).first()
         new_program.prerequisites.append(new_program_prerequisite) 
 
     new_program_categories = data['program_category']
@@ -104,7 +108,7 @@ def edit_program(current_user):
 
     new_program_faqs = data['FAQ']
     for faq in new_program_faqs:
-        new_faq = Faq(question = faq['question'] , answer = 'answer')
+        new_faq = Faq(question = faq['question'] , answer = faq['answer'])
         db.session.add(new_faq)
         new_program.category.append(new_faq)
 
@@ -180,7 +184,7 @@ def delete_program(current_user, public_id):
 @cross_origin()
 @token_required
 def subscribe_to_program(current_user,public_program_id):
-    enrolled = ProgramEnrollment.query.filter_by(id=public_program_id, user_id=current_user['public_id']).first()
+    enrolled = ProgramEnrollment.query.filter_by(id=public_program_id, user_id=current_user['public_id']).first() # user_id ??? 
     if enrolled:
         return jsonify({'error': 'User is already subscribed'})
     new_program_enrollment =ProgramEnrollment(program_id=public_program_id,student_id=current_user['publid_id'],is_accepted=True,join_date=date.today().strftime("%Y-%m-%d"))
