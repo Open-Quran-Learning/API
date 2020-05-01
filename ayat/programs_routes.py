@@ -59,7 +59,7 @@ def create_program(current_user):
     new_program_faqs = data['FAQ']
 
     for faq in new_program_faqs:
-        new_faq = Faq(question = faq['question'] , answer = faq['answer'])
+        new_faq = Faq(question = faq['question'] , answer =faq['answer'])
         db.session.add(new_faq)
         new_program.category.append(new_faq)
 
