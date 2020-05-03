@@ -20,7 +20,7 @@ def teacher_required(f):
 
             user = User.query.filter_by(public_id=current_user['public_id']).first()
 
-            if not user.type.permission == 'teacher':
+            if not current_user['permission'] == 'teacher':
                 return jsonify({'message': 'user is unauthorized'}), 403
 
         except:
@@ -45,7 +45,7 @@ def teacher_or_above_required(f):
 
             user = User.query.filter_by(public_id=current_user['public_id']).first()
 
-            if user.type.permission == 'student':
+            if current_user['permission'] == 'student':
                 return jsonify({'message': 'user is unauthorized'}), 403
 
         except:
@@ -70,7 +70,7 @@ def supervisor_required(f):
 
             user = User.query.filter_by(public_id=current_user['public_id']).first()
 
-            if not user.type.permission == 'supervisor':
+            if not current_user['permission'] == 'supervisor':
                 return jsonify({'message': 'user is unauthorized'}), 403
 
         except:
@@ -95,7 +95,7 @@ def supervisor_or_above_required(f):
 
             user = User.query.filter_by(public_id=current_user['public_id']).first()
 
-            if user.type.permission == 'teacher' or user.type.permission == 'student':
+            if current_user['permission'] == 'teacher' or current_user['permission'] == 'student':
                 return jsonify({'message': 'user is unauthorized'}), 403
 
         except:
@@ -120,7 +120,7 @@ def admin_required(f):
 
             user = User.query.filter_by(public_id=current_user['public_id']).first()
 
-            if not user.type.permission == 'admin':
+            if not current_user['permission'] == 'admin':
                 return jsonify({'message': 'user is unauthorized'}), 403
 
         except:
