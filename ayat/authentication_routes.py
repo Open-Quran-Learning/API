@@ -57,8 +57,9 @@ def get_all_users(current_user):
 @token_required
 def get_one_user(current_user, public_id):
 
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
-        return jsonify({"error": "user is unauthorized"}), 403
+    if not current_user['type'] == 'staff':
+        if not current_user['public_id'] == str(public_id):
+            return jsonify({"error": "user is unauthorized"}), 403
 
     user = User.query.filter_by(public_id=public_id).first()
     if not user:
@@ -80,47 +81,36 @@ def get_one_user(current_user, public_id):
     return jsonify({'user': user}), 200
 
 
-
-@app.route('/v1/users/<public_id>',methods=['PUT'])
+@app.route('/v1/users/<public_id>', methods=['PUT'])
 @token_required
-def promote_user(current_user,public_id):
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
+def promote_user(current_user, public_id):
+    if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
         return jsonify({"error": "user is unauthorized"}), 403
+
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
         return jsonify({'message': 'No user found!'}), 404
 
     data = request.get_json()
-    if current_user['publid_id'] == str(public_id):
-        if data['name']:
-            user.name = data['name']
-        if data['email']:
-            user.email = data['email']
-        if data['password']:
-            user.password = generate_password_hash(data['password'], method='sha256')
-        if data['country_name']:
-            user.country_name = data['country_name']
-        if data['profile_picture']:
-            user.profile_picture = data['profile_picture']
-        if data['phone_number']:
-            user.phone_number = data['phone_number']
-        if data['birth_date']:
-            user.birth_date = data['birth_date']
-
-    if current_user['type'] == 'staff':
-        if data['type']:
-            user.type = data['type']
+    if current_user['public_id'] == str(public_id):
+        user.name = data['name']
+        user.email = data['email']
+        user.password = generate_password_hash(data['password'], method='sha256')
+        user.country_name = data['country_name']
+        user.profile_picture = data['profile_picture']
+        user.phone_number = data['phone_number']
+        user.birth_date = data['birth_date']
+        user.type = data['type']
 
     db.session.commit()
     return jsonify({'message': 'The user has been promoted!'})
 
-	
 
 @app.route('/v1/users/<public_id>',methods=['DELETE'])
 @token_required
 def delete_user(current_user,public_id):
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
+    if (not current_user['type'] == 'staff') or (not current_user['public_id'] == str(public_id)):
         return jsonify({"error": "user is unauthorized"}), 403
     user = User.query.filter_by(public_id=public_id).first()
 
@@ -148,12 +138,11 @@ def login_or_create():
         if not user:
             return jsonify({"error": "user is unauthorized"}), 403
 
-        if check_password_hash(user.password,user_password):
-            token= jwt.encode({'public_id': user.public_id,
+        if check_password_hash(user.password, user_password):
+            token= jwt.encode({'public_id': str(user.public_id),
                                'email': user.email,
                                'type': user.type},app.config['SECRET_KEY'])
             return jsonify({
-
                             'token' : token.decode('UTF-8'),
                             'public_id' : user.public_id,
                             'name' : user.name,
@@ -170,7 +159,7 @@ def login_or_create():
 
     # creating a new user
 
-    if data['action'] == 'register' :
+    if data['action'] == 'register':
 
         # checking if user exists or not 
         user_email = data['email']
@@ -178,17 +167,14 @@ def login_or_create():
         if user is not None:
             return jsonify({"status":  "1"})
 
-
         user_phone = data['phone']
-        user = User.query.filter_by(phone=user_phone).first()
+        user = User.query.filter_by(phone_number=user_phone).first()
         if user is not None:
             return jsonify({"status":  "2"})
 
-
-
         hashed_password = generate_password_hash(data['password'], method='sha256')
 
-        new_user = User(
+        new_user = Student(
                         name = data['full_name'],
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
@@ -199,8 +185,7 @@ def login_or_create():
                         gender = data['gender'],
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
-                        # setting up the type
-                        type = ['user']
+                        type = "student"
                         )
 
         db.session.add(new_user)

@@ -9,7 +9,7 @@ class User(db.Model):
     __tablename__ = "user"
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.VARCHAR(40), nullable=False)
-    public_id = db.Column(UUID(as_uuid=True),default=uuid.uuid4, unique=True,nullable=False)
+    public_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True,nullable=False)
     email = db.Column(db.VARCHAR(120), unique=True, nullable=False)
     country_name = db.Column(db.VARCHAR(30), nullable=False)
     phone_number = db.Column(db.VARCHAR(15), unique=True, nullable=False)
