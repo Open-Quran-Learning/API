@@ -166,7 +166,7 @@ def login_or_create():
             return jsonify({"error": "user is unauthorized"}), 403
 
         if check_password_hash(user.password,user_password):
-            token= jwt.encode({'public_id': user.public_id},app.config['SECRET_KEY'])
+            token= jwt.encode({'public_id':str(user.public_id)},app.config['SECRET_KEY'])
             return jsonify({
 
                             'token' : token.decode('UTF-8'),

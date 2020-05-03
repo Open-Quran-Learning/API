@@ -17,7 +17,7 @@ class User(db.Model):
     profile_picture = db.Column(db.VARCHAR(20)) ## FrontEnd will set a default Profile Picture
     birth_date = db.Column(db.Date, nullable=False)
     gender = db.Column(db.Boolean, nullable=False)
-    password = db.Column(db.VARCHAR(30),nullable=False)
+    password = db.Column(db.VARCHAR(80),nullable=False)
     registeration_date = db.Column(db.Date,nullable=False)
     is_activated = db.Column(db.Boolean)
     
