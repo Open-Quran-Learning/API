@@ -5,6 +5,7 @@ import uuid
 
 #############################################################################################################
 
+
 class User(db.Model):
     __tablename__ = "user"
     user_id = db.Column(db.Integer, primary_key=True)
@@ -25,30 +26,28 @@ class User(db.Model):
     __mapper_args__ = { 'polymorphic_identity': 'user',
                         'polymorphic_on': type
                       }
-
     
     def __repr__(self):
-    	Info_text = (f'{self.__class__.__name__} Id: {self.user_id}.\t'
-    		f'{self.__class__.__name__} Name: {self.name}.\t'
-    		f'Public Id: {self.public_id}.\t'
-    		f'E-mail: {self.email}.\t'
-    		f'Country: {self.country_name}.\t'
-    		f'Phone Number: {self.phone_number}.\t'
-    		f'Profile Picture: {self.profile_picture}.\t'
-    		f'Birth Date: {self.birth_date}.\t'
-    		f'Gender: {self.gender}.\t'
-    		f'Password: {self.password}.\t'
-    		f'Registeration Date: {self.registeration_date}.\t'
-    		f'Activation: {self.is_activated}.\t'
-            f'Type: {self.type}.\n')
-    		
+        Info_text = (f'{self.__class__.__name__} Id: {self.user_id}.\t'
+                     f'{self.__class__.__name__} Name: {self.name}.\t'
+                     f'Public Id: {self.public_id}.\t'
+                     f'E-mail: {self.email}.\t'
+                     f'Country: {self.country_name}.\t'
+                     f'Phone Number: {self.phone_number}.\t'
+                     f'Profile Picture: {self.profile_picture}.\t'
+                     f'Birth Date: {self.birth_date}.\t'
+                     f'Gender: {self.gender}.\t'
+                     f'Password: {self.password}.\t'
+                     f'Registeration Date: {self.registeration_date}.\t'
+                     f'Activation: {self.is_activated}.\t'
+                     f'Type: {self.type}.\n')
 
-    	return Info_text
+        return Info_text
 
 #############################################################################################################
 
-## Association Table between student table and guardian table:
 
+# Association Table between student table and guardian table:
 Student_Guardian = db.Table('student_guardian', db.Model.metadata,
     db.Column('student_guardian_id', db.Integer, primary_key=True),
     db.Column('student_id', db.Integer, db.ForeignKey('student.student_id'), nullable=False),
@@ -62,9 +61,9 @@ class Student(User):
     student_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
     guardians = db.relationship('Guardian', secondary=Student_Guardian, backref=db.backref('student',lazy='dynamic'))
 
-    recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
-    assessment_results = db.relationship("AssessmentResults", back_populates="student")
-    program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
+    # recitation_enrollment = db.relationship("RecitationEnrollment", back_populates='student')
+    # assessment_results = db.relationship("AssessmentResults", back_populates="student")
+    # program_enrollment = db.relationship("ProgramEnrollment", back_populates="student")
 
     __mapper_args__ = {'polymorphic_identity':'student'}
 
@@ -97,10 +96,10 @@ Staff_Permission = db.Table('staff_permission', db.Model.metadata,
 class Staff(User):
     __tablename__ = "staff"
     staff_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key=True)
-    assessment_results = db.relationship("AssessmentResults", back_populates="staff")
+    # assessment_results = db.relationship("AssessmentResults", back_populates="staff")
     permissions = db.relationship('Permission', secondary=Staff_Permission, backref=db.backref('staff',lazy='dynamic'))
 
-    recitations = db.relationship('Recitation', backref=db.backref('staff'))
+    # recitations = db.relationship('Recitation', backref=db.backref('staff'))
 
     __mapper_args__ = {'polymorphic_identity':'staff'}
 
