@@ -78,7 +78,6 @@ def get_all_users(current_user):
 @app.route('/v1/users/<public_id>', methods=['GET'])
 @token_required
 def get_one_user(current_user, public_id):
-
     if not current_user['type'] == 'staff':
         if not current_user['public_id'] == str(public_id):
             logger.warning('user is unauthorized')
@@ -141,7 +140,7 @@ def promote_user(current_user, public_id):
 
 @app.route('/v1/users/<public_id>', methods=['DELETE'])
 @token_required
-def delete_user(current_user,public_id):
+def delete_user(current_user, public_id):
     if (not current_user['type'] == 'staff') or (not current_user['public_id'] == str(public_id)):
         logger.warning('user is unauthorized')
         return jsonify({"error": "user is unauthorized"}), 403
@@ -153,13 +152,14 @@ def delete_user(current_user,public_id):
     db.session.delete(user)
     db.session.commit()
 
+
     logger.info('succeeded to deleted')
     return jsonify({'message': 'The user has been deleted!'}), 200
 
 
+
 @app.route('/v1/users', methods=['POST'])
 def login_or_create():
-
     data = request.get_json(force=True)
     print(data)
     # login checking
@@ -199,7 +199,24 @@ def login_or_create():
             logger.exception('faild to login')
             return jsonify({'message': 'Faild to login'}), 500
 
-    # creating a new user
+
+        if check_password_hash(user.password, user_password):
+            token = jwt.encode({'public_id': str(user.public_id),
+                                'email': user.email,
+                                'type': user.type,
+                                'permission': user.type.permission}, app.config['SECRET_KEY'])
+            return jsonify({
+                'token': token.decode('UTF-8'),
+                'public_id': user.public_id,
+                'name': user.name,
+                'email': user.email,
+                'country_name': user.country_name,
+                'phone_number': user.phone_number,
+                'profile_picture': user.profile_picture,
+                'birth_date': user.birth_date,
+                'gender': user.gender,
+            }), 200
+
 
     elif data['action'] == 'register':
         try:
@@ -244,5 +261,34 @@ def login_or_create():
         return jsonify({'message': 'Invalid input action '}), 500
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+        # checking if user exists or not 
+        user_email = data['email']
+        user = User.query.filter_by(email=user_email).first()
+        if user is not None:
+            return jsonify({"status": "1"})
+
+        user_phone = data['phone']
+        user = User.query.filter_by(phone_number=user_phone).first()
+        if user is not None:
+            return jsonify({"status": "2"})
+
+        hashed_password = generate_password_hash(data['password'], method='sha256')
+
+        new_user = Student(
+            name=data['full_name'],
+            public_id=str(uuid.uuid4()),
+            email=data['email'],
+            country_name=data['country'],
+            phone_number=data['phone'],
+            profile_picture=data['profile_pic'],
+            birth_date=data['birth_date'],
+            gender=data['gender'],
+            password=hashed_password,
+            registeration_date=data['registeration_date'],
+            type="student"
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'status': 'created'}), 200
+
