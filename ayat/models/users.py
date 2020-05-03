@@ -1,5 +1,4 @@
 from ayat import db
-
 from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
@@ -10,15 +9,15 @@ class User(db.Model):
     __tablename__ = "user"
     user_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.VARCHAR(40), nullable=False)
-    public_id = db.Column(UUID(as_uuid=True),default=uuid.uuid4, unique=True,nullable=False)
+    public_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, unique=True,nullable=False)
     email = db.Column(db.VARCHAR(120), unique=True, nullable=False)
     country_name = db.Column(db.VARCHAR(30), nullable=False)
     phone_number = db.Column(db.VARCHAR(15), unique=True, nullable=False)
-    profile_picture = db.Column(db.VARCHAR(20)) ## FrontEnd will set a default Profile Picture
+    profile_picture = db.Column(db.VARCHAR(20)) # FrontEnd will set a default Profile Picture
     birth_date = db.Column(db.Date, nullable=False)
     gender = db.Column(db.Boolean, nullable=False)
-    password = db.Column(db.VARCHAR(30),nullable=False)
-    registeration_date = db.Column(db.Date,nullable=False)
+    password = db.Column(db.VARCHAR(80), nullable=False)
+    registeration_date = db.Column(db.Date, nullable=False)
     is_activated = db.Column(db.Boolean)
     
     type = db.Column(db.String(30), nullable=False)
