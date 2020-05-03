@@ -28,12 +28,7 @@ app.config['MAIL_ASCII_ATTACHMENTS'] = True
 mail = Mail(app)
 
 from ayat.models import models
-<<<<<<< HEAD
 
-
-
-
-=======
 from ayat import helpers
 from ayat import authentication_routes
 from ayat.authorization import authorization_decorators
