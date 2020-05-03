@@ -10,11 +10,6 @@ import os
 
 HASHINGMETHOD = os.environ.get('HASHINGMETHOD')
 
-<<<<<<< HEAD
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
-=======
->>>>>>> userRoutes
 
 def token_required(f):
     @wraps(f)
