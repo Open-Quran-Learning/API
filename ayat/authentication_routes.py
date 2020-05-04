@@ -1,15 +1,14 @@
 from flask import Flask, request, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from flask_cors import  cross_origin
+from flask_cors import cross_origin
+
 from functools import wraps
 from ayat.models.users import * 
 from ayat import app, db
 import os
 
 HASHINGMETHOD = os.environ.get('HASHINGMETHOD')
-
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 
 def token_required(f):
@@ -72,12 +71,13 @@ def get_all_users(current_user):
 @token_required
 def get_one_user(current_user, public_id):
 
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
-        return jsonify({"error": "user is unauthorized"}), 403
+    if not current_user['type'] == 'staff':
+        if not current_user['public_id'] == str(public_id):
+            return jsonify({"error": "user is unauthorized"}), 403
 
     user = User.query.filter_by(public_id=public_id).first()
     if not user:
-        return jsonify({'message': 'No user found!'})
+        return jsonify({'message': 'No user found!'}), 404
 
     user = {
         'public_id': user.public_id,
@@ -99,16 +99,17 @@ def get_one_user(current_user, public_id):
 @app.route('/v1/users/<public_id>',methods=['PUT'])
 @cross_origin()
 @token_required
-def promote_user(current_user,public_id):
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
+def promote_user(current_user, public_id):
+    if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
         return jsonify({"error": "user is unauthorized"}), 403
+
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
-        return jsonify({'message': 'No user found!'})
+        return jsonify({'message': 'No user found!'}), 404
 
-    data = request.get_json()
-    if current_user['publid_id'] == str(public_id):
+    data = request.get_json(force=True)
+    if current_user['public_id'] == str(public_id):
         user.name = data['name']
         user.email = data['email']
         user.password = generate_password_hash(data['password'], method= HASHINGMETHOD)
@@ -116,20 +117,17 @@ def promote_user(current_user,public_id):
         user.profile_picture = data['profile_picture']
         user.phone_number = data['phone_number']
         user.birth_date = data['birth_date']
-
-    if current_user['type'] == 'staff':
         user.type = data['type']
 
     db.session.commit()
     return jsonify({'message': 'The user has been promoted!'})
 
-	
 
 @app.route('/v1/users/<public_id>',methods=['DELETE'])
 @cross_origin()
 @token_required
 def delete_user(current_user,public_id):
-    if (not current_user['type'] == 'staff') or (not current_user['publid_id'] == str(public_id)):
+    if (not current_user['type'] == 'staff') or (not current_user['public_id'] == str(public_id)):
         return jsonify({"error": "user is unauthorized"}), 403
     user = User.query.filter_by(public_id=public_id).first()
 
@@ -145,8 +143,8 @@ def delete_user(current_user,public_id):
 @cross_origin()
 def login_or_create():
 
-    data = request.get_json()
-
+    data = request.get_json(force=True)
+    print(data)
     # login checking
     print('this is request')
     print(request)
@@ -165,13 +163,13 @@ def login_or_create():
         if not user:
             return jsonify({"error": "user is unauthorized"}), 403
 
-        if check_password_hash(user.password,user_password):
-            token= jwt.encode({'public_id':str(user.public_id)},app.config['SECRET_KEY'])
+        if check_password_hash(user.password, user_password):
+            token= jwt.encode({'public_id': str(user.public_id),
+                               'email': user.email,
+                               'type': user.type},app.config['SECRET_KEY'])
             return jsonify({
-
                             'token' : token.decode('UTF-8'),
                             'public_id' : user.public_id,
-
                             'name' : user.name,
                             'email' : user.email ,
                             'country_name' : user.country_name ,
@@ -186,26 +184,22 @@ def login_or_create():
 
     # creating a new user
 
-    if data['action'] == 'register' :
+    if data['action'] == 'register_student':
 
         # checking if user exists or not 
         user_email = data['email']
         user = User.query.filter_by(email=user_email).first()
         if user is not None:
-            return jsonify({"status":  "Email already exists"}), 1
-
+            return jsonify({"status":  "1"})
 
         user_phone = data['phone']
         user = User.query.filter_by(phone_number=user_phone).first()
         if user is not None:
-            return jsonify({"status":  "Phone already exists"}), 2
-
-
+            return jsonify({"status":  "2"})
 
         hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
 
-        new_user = User(
-                        user_id = data['user_id'], ## ??????????
+        new_user = Student(
                         name = data['full_name'],
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
@@ -216,18 +210,43 @@ def login_or_create():
                         gender = data['gender'],
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
-                        # setting up the type
-                        type = data['type']
+                        type = "student",
                         )
 
         db.session.add(new_user)
         db.session.commit()
         return jsonify({'status' : 'created'}),200
 
+    if data['action'] == 'register_staff':
 
+        # checking if user exists or not 
+        user_email = data['email']
+        user = User.query.filter_by(email=user_email).first()
+        if user is not None:
+            return jsonify({"status":  "1"})
 
+        user_phone = data['phone']
+        user = User.query.filter_by(phone_number=user_phone).first()
+        if user is not None:
+            return jsonify({"status":  "2"})
 
-if __name__ == "__main__":
-    app.run(debug=True)
+        hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
 
+        new_user = Staff(
+                        name = data['full_name'],
+                        public_id=str(uuid.uuid4()),
+                        email = data['email'],
+                        country_name = data['country'],
+                        phone_number = data['phone'],
+                        profile_picture = data['profile_pic'],
+                        birth_date = data['birth_date'],
+                        gender = data['gender'],
+                        password=hashed_password,
+                        registeration_date = data['registeration_date'],
+                        type = "staff",
+                        )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'status' : 'created'}),200
 
