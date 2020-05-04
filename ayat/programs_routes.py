@@ -54,11 +54,16 @@ def create_program(current_user):
 
     for category in new_program_categories:
         
-        # existing_category = Category.query.filter_by(category_name = category['name']).first()
-        # if not existing_category:
-        new_category = Category(category_name = category['type'])
-        db.session.add(new_category)
-        new_program.category.append(new_category)
+        existing_category = Category.query.filter_by(category_name = category['type']).first()
+        
+        if not existing_category:
+            print('not exist')
+            new_category = Category(category_name = category['type'])
+            db.session.add(new_category)
+            new_program.category.append(new_category)
+        else:
+            new_program.category.append(existing_category)
+
 
 
     new_program_faqs = data['FAQ']
@@ -111,13 +116,18 @@ def edit_program(current_user,public_id):
 
     current_program_categories = data['program_category']
     for category in current_program_categories:
-        
-        # existing_category = Category.query.filter_by(category_name = category['name']).first()
-        # if not existing_category:
-        current_category = Category(category_name = category['type'])
-        db.session.add(current_category)
-        current_program.category.append(current_category)
 
+        existing_category = Category.query.filter_by(category_name = category['type']).first()
+        
+        if not existing_category:
+            print('not exist')
+            new_category = Category(category_name = category['type'])
+            db.session.add(new_category)
+            new_program.category.append(new_category)
+        else:
+            new_program.category.append(existing_category)
+    
+      
     # current_program_faqs = data['FAQ']
     # for faq in current_program_faqs:
     #     current_faq = Faq(question = faq['question'] , answer = faq['answer'])
