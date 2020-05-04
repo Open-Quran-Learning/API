@@ -53,6 +53,9 @@ def create_program(current_user):
     new_program_categories = data['program_category']
 
     for category in new_program_categories:
+        
+        # existing_category = Category.query.filter_by(category_name = category['name']).first()
+        # if not existing_category:
         new_category = Category(category_name = category['type'])
         db.session.add(new_category)
         new_program.category.append(new_category)
@@ -108,6 +111,9 @@ def edit_program(current_user,public_id):
 
     current_program_categories = data['program_category']
     for category in current_program_categories:
+        
+        # existing_category = Category.query.filter_by(category_name = category['name']).first()
+        # if not existing_category:
         current_category = Category(category_name = category['type'])
         db.session.add(current_category)
         current_program.category.append(current_category)
@@ -190,13 +196,28 @@ def delete_program(current_user, public_id):
 @cross_origin()
 @token_required
 def subscribe_to_program(current_user,public_program_id):
-    enrolled = ProgramEnrollment.query.filter_by(id=public_program_id, user_id=current_user['public_id']).first() # user_id ??? 
+
+    selected_user = User.query.filter_by(public_id = current_user['public_id']).first()
+    current_program = Program.query.filter_by(public_program_id = public_program_id).first()
+ 
+
+    enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
+                                                 student_id=selected_user.user_id
+                                                 ).first() 
     if enrolled:
         return jsonify({'error': 'User is already subscribed'})
-    new_program_enrollment =ProgramEnrollment(program_id=public_program_id,student_id=current_user['publid_id'],is_accepted=True,join_date=date.today().strftime("%Y-%m-%d"))
+    
+    new_program_enrollment =ProgramEnrollment( 
+                                              student = selected_user,
+                                              program = current_program,
+                                              is_accepted=True,
+                                              join_date=date.today().strftime("%Y-%m-%d")
+                                              )
     db.session.add(new_program_enrollment)
     db.session.commit()
     return jsonify({'status' : "enrolled"}),200
+    
+
     
 
 @app.route('/v1/programs/<public_program_id>/enrollments',methods=['DELETE'])
@@ -204,7 +225,12 @@ def subscribe_to_program(current_user,public_program_id):
 @token_required
 def delete_program_enrollment(current_user,public_program_id):
 
-    enrolled = ProgramEnrollment.query.filter_by(program_id=public_program_id, student_id=current_user['public_id']).first()
+    selected_user = User.query.filter_by(public_id = current_user['public_id']).first()
+    current_program = Program.query.filter_by(public_program_id = public_program_id).first()
+
+    enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
+                                                 student_id=selected_user.user_id
+                                                 ).first() # user_id ??? 
     if not enrolled:
         return jsonify({'error': 'user not enrolled'}),403
 
