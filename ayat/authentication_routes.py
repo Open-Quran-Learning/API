@@ -108,7 +108,7 @@ def promote_user(current_user, public_id):
     if not user:
         return jsonify({'message': 'No user found!'}), 404
 
-    data = request.get_json()
+    data = request.get_json(force=True)
     if current_user['public_id'] == str(public_id):
         user.name = data['name']
         user.email = data['email']
