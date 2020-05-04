@@ -184,7 +184,40 @@ def login_or_create():
 
     # creating a new user
 
-    if data['action'] == 'register':
+    if data['action'] == 'register_student':
+
+        # checking if user exists or not 
+        user_email = data['email']
+        user = User.query.filter_by(email=user_email).first()
+        if user is not None:
+            return jsonify({"status":  "1"})
+
+        user_phone = data['phone']
+        user = User.query.filter_by(phone_number=user_phone).first()
+        if user is not None:
+            return jsonify({"status":  "2"})
+
+        hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
+
+        new_user = Student(
+                        name = data['full_name'],
+                        public_id=str(uuid.uuid4()),
+                        email = data['email'],
+                        country_name = data['country'],
+                        phone_number = data['phone'],
+                        profile_picture = data['profile_pic'],
+                        birth_date = data['birth_date'],
+                        gender = data['gender'],
+                        password=hashed_password,
+                        registeration_date = data['registeration_date'],
+                        type = "student",
+                        )
+
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'status' : 'created'}),200
+
+    if data['action'] == 'register_staff':
 
         # checking if user exists or not 
         user_email = data['email']
@@ -216,3 +249,4 @@ def login_or_create():
         db.session.add(new_user)
         db.session.commit()
         return jsonify({'status' : 'created'}),200
+
