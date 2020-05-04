@@ -199,7 +199,7 @@ def login_or_create():
 
         hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
 
-        new_user = Student(
+        new_user = Staff(
                         name = data['full_name'],
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
@@ -210,7 +210,7 @@ def login_or_create():
                         gender = data['gender'],
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
-                        type = "student",
+                        type = "staff",
                         )
 
         db.session.add(new_user)
