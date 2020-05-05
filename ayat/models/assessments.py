@@ -2,7 +2,7 @@
 from ayat.__init__ import db
 from sqlalchemy.dialects.postgresql import UUID, ARRAY, JSON
 import uuid
-
+from .users import *
 
 class AssessmentResults(db.Model):
     __tablename__ = 'assessment_results'
@@ -12,7 +12,6 @@ class AssessmentResults(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.student_id'), nullable=False)
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.staff_id'), nullable=False)
     grade = db.Column(db.SMALLINT, nullable=False)
-
     db.UniqueConstraint(exam_id, student_id, staff_id)
     student = db.relationship("Student")
     exam = db.relationship("Exam")

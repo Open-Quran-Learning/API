@@ -1,5 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
+from flask_cors import CORS
+
 
 
 from flask_mail import Mail
@@ -8,9 +11,13 @@ import os
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://postgres:ASDasd225588@localhost:5432/postgres"
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
+                                        
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = "thisissecret"
 db = SQLAlchemy(app)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -21,6 +28,7 @@ app.config['MAIL_ASCII_ATTACHMENTS'] = True
 mail = Mail(app)
 
 from ayat.models import models
+
 from ayat import helpers
 from ayat import authentication_routes
 from ayat.authorization import authorization_decorators
