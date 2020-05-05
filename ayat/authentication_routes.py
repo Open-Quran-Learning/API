@@ -8,7 +8,7 @@ from ayat.models.users import *
 from ayat import app, db
 import os
 
-HASHINGMETHOD = os.environ.get('HASHINGMETHOD')
+HASHINGMETHOD = "sha256"
 
 
 def token_required(f):
@@ -204,7 +204,7 @@ def login_or_create():
                         public_id=str(uuid.uuid4()),
                         email = data['email'],
                         country_name = data['country'],
-                        phone_number = data['phone'],
+                        phone_number = str(data['phone']),
                         profile_picture = data['profile_pic'],
                         birth_date = data['birth_date'],
                         gender = data['gender'],
