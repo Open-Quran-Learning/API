@@ -21,7 +21,6 @@ def client(create_app):
     return create_app.test_client()
 
 
-# TODO: commit created user to db
 @pytest.fixture
 def create_student():
     user = """{
@@ -40,9 +39,12 @@ def create_student():
         "country": "Algeria",
         "registeration_date": "2010-01-01"
     }"""
+    db.session.add(user)
+    db.session.commit()
+    yield user
+    db.drop_all()
 
 
-# TODO: commit user to db
 @pytest.fixture
 def create_staff():
     staff = """{
@@ -58,11 +60,15 @@ def create_staff():
         "country": "Algeria",
         "registeration_date": "2010-01-01"
     }"""
+    db.session.add(staff)
+    db.session.commit()
+    yield staff
+    db.drop_all()
 
 
 @pytest.fixture
-def get_jwt_for_testing(type, client):
-    if type == 'staff':
+def get_jwt_for_testing(per, client):
+    if per == 'staff':
         create_staff()
         payload = """{
             "action": "login",
@@ -70,7 +76,7 @@ def get_jwt_for_testing(type, client):
             "password": "testpass123"
         }"""
         res = client.post('/v1/users', data=payload)
-    else :
+    else:
         create_student()
         payload = """{
             "action": "login",
@@ -78,5 +84,5 @@ def get_jwt_for_testing(type, client):
             "password: "testpass123"
         }"""
         res = client.post('/v1/users', data=payload)
-    
+
     return res.token

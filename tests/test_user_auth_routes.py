@@ -1,6 +1,5 @@
-import pytest
-from flask import g, session
-from sqlalchemy import false, true
+from tests.conftest import get_jwt_for_testing, create_student
+from ayat.models import users
 
 
 def test_base_url(client):
@@ -28,6 +27,7 @@ def test_create_student(client):
     }"""
     res = client.post('/v1/users', data=payload)
     assert res.status_code == 200
+    assert res.email == users.User.query.filter_by(email='testuser@email.com').first()
 
 
 def test_create_staff(client):
@@ -47,15 +47,17 @@ def test_create_staff(client):
 
     res = client.post('/v1/users', data=payload)
     assert res.status_code == 200
+    assert res.email == users.User.query.filter_by(email='testuser@email.com').first()
 
-# TODO: add token, assert result(user)
+
 def test_get_invalid_user(client):
-    res = client.get('/v1/users/123')
-    assert res.status_code == 403
+    jwt = get_jwt_for_testing('user')
+    res = client.get('/v1/users/123', data=jwt)
+    assert res.status_code == 404
 
-# TODO: add token, assert how many users, assert msg
+
 def test_get_all_users(client):
-    jwt = get_jwt_for_testing(type='staff')
+    jwt = get_jwt_for_testing('staff')
     res = client.get('/v1/users', data=jwt)
     assert res.status_code == 200
 
@@ -69,11 +71,14 @@ def test_login(client):
     }"""
     res = client.post('/v1/users', data=payload)
     assert res.status_code == 200
-    assert res.email == payload['email']
+    assert res.email == b'testuser@email.com'
+
 
 # TODO: token, msg
 def test_promote_user(client):
+    jwt = get_jwt_for_testing('staff')
     pass
+
 
 # TODO: token, msg
 def test_delete_user(client):
