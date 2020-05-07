@@ -84,8 +84,11 @@ def create_program(current_user):
 
     db.session.add(new_program)
     db.session.commit()
+
     logger.info("porgram is created")
-    return jsonify({'status' : 'created'}),200
+    return jsonify({'status' : 'created',
+                    'program_public_id':new_program.public_program_id,
+    }),200
 
 
 
@@ -133,22 +136,22 @@ def edit_program(current_user,public_id):
             print('not exist')
             new_category = Category(category_name = category['type'])
             db.session.add(new_category)
-            new_program.category.append(new_category)
+            current_program.category.append(new_category)
         else:
-            new_program.category.append(existing_category)
-
-
-    # current_program_faqs = data['FAQ']
-    # for faq in current_program_faqs:
-    #     current_faq = Faq(question = faq['question'] , answer = faq['answer'])
-    #     db.session.add(current_faq)
-    #     current_program.faqs.append(current_faq)
-
+            current_program.category.append(existing_category)
+         
+    current_program_faqs = data['FAQ']
+    for faq in current_program_faqs:
+        current_faq = Faq(question = faq['question'] , answer = faq['answer'])
+        db.session.add(current_faq)
+        current_program.faqs.append(current_faq)
 
     db.session.add(current_program)
     db.session.commit()
+
     logger.info('program is updated')
-    return jsonify({'status' : 'created'}),200
+    return jsonify({'status' : 'edited'}),200
+
 
 
 
@@ -204,6 +207,10 @@ def delete_program(current_user, public_id):
     if not current_user['type'] == 'staff':
         logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
+    
+    current_program = Program.query.filter_by(public_program_id=public_id).first()
+    if current_program is None:
+        return jsonify({"status": "program not found"}), 403
 
     program_to_delete = Program.query.filter_by(public_program_id=public_id).first()
 
@@ -219,6 +226,9 @@ def delete_program(current_user, public_id):
 @cross_origin()
 @token_required
 def subscribe_to_program(current_user,public_program_id):
+
+    if  current_user['type'] == 'staff':
+        return jsonify({"status": "you are a staff member"}), 403
 
     selected_user = User.query.filter_by(public_id = current_user['public_id']).first()
     current_program = Program.query.filter_by(public_program_id = public_program_id).first()

@@ -128,49 +128,79 @@ def get_one_user(current_user, public_id):
 @cross_origin()
 @token_required
 def promote_user(current_user, public_id):
+
+    data = request.get_json(force=True)
+    # if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
+    #     return jsonify({"error": "user is unauthorized"}), 403
     if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
         logger.warning('user is unauthorized')
         return jsonify({"error": "user is unauthorized"}), 403
+    elif  (not current_user['public_id'] == str(public_id)) and current_user['type'] == 'student':
+        return jsonify({"error": "user is unauthorized"}), 403
+    
+    user_email = data['email']
+    user = User.query.filter_by(email=user_email).first()
+    if user is not None:
+        if str(user.public_id) != str(public_id) and (not current_user['type'] == 'staff'):
+            print(current_user['type'])
+            return jsonify({"status":  "Email already exists"})
+      
+
+    user_phone = data['phone']
+    user = User.query.filter_by(phone_number=user_phone).first()
+    if user is not None:
+        if str(user.public_id) != str(public_id) and (not current_user['type'] == 'staff')  :
+            return jsonify({"status":  "Phone already exists"})
+        
 
     user = User.query.filter_by(public_id=public_id).first()
-
     if not user:
         logger.warning('user not found ')
         return jsonify({'message': 'No user found!'}), 404
+    
+    # if current_user['public_id'] == str(public_id):
+    user.name = data['full_name']
+    user.email = data['email']
+    user.password = generate_password_hash(data['password'], method= HASHINGMETHOD)
+    user.country_name = data['country']
+    user.profile_picture = data['profile_pic']
+    user.phone_number = data['phone']
+    user.birth_date = data['birth_date']
 
-    data = request.get_json(force=True)
-    if current_user['public_id'] == str(public_id):
-        user.name = data['name']
-        user.email = data['email']
-        user.password = generate_password_hash(data['password'], method= HASHINGMETHOD)
-        user.country_name = data['country_name']
-        user.profile_picture = data['profile_picture']
-        user.phone_number = data['phone_number']
-        user.birth_date = data['birth_date']
-        user.type = data['type']
+    # if current_user['type'] == 'staff':
+    #     user.type = data['type']
 
-    db.session.commit()
-    logger.info('succeeded to promote')
-    return jsonify({'message': 'The user has been promoted!'})
+    # db.session.add(user)
+    try:
+        db.session.commit()
+        return jsonify({"status": "updated"})
+    except:
+        return jsonify({"status": "you changed the mail or phone with existing one"})
 
 
+      
 @app.route('/v1/users/<public_id>',methods=['DELETE'])
 @cross_origin()
 @token_required
 def delete_user(current_user,public_id):
-    if (not current_user['type'] == 'staff') or (not current_user['public_id'] == str(public_id)):
+
+    if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
         logger.warning('user is unauthorized')
-        return jsonify({"error": "user is unauthorized"}), 403
+        return jsonify({"status": "user is unauthorized"}), 403
+    elif  (not current_user['public_id'] == str(public_id)) and current_user['type'] == 'student':
+        return jsonify({"status": "user is unauthorized"}), 403
+
     user = User.query.filter_by(public_id=public_id).first()
 
     if not user:
         logger.warning('user not found ')
-        return jsonify({'message': 'No user found!'}),404
+        return jsonify({'status': 'no user found'})
     db.session.delete(user)
     db.session.commit()
-
+    
     logger.info('succeeded to deleted')
-    return jsonify({'message':'The user has been deleted!'}),200
+    return jsonify({'status':'deleted'}),200
+
 
 
 @app.route('/v1/users', methods=['POST'])
@@ -234,12 +264,12 @@ def login_or_create():
         user_email = data['email']
         user = User.query.filter_by(email=user_email).first()
         if user is not None:
-            return jsonify({"status":  "1"})
+            return jsonify({"status":  "Email already exists"})
 
         user_phone = data['phone']
         user = User.query.filter_by(phone_number=user_phone).first()
         if user is not None:
-            return jsonify({"status":  "2"})
+            return jsonify({"status":  "Phone already exists"})
 
         hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
         new_guardian = Guardian(
@@ -258,7 +288,6 @@ def login_or_create():
                         password=hashed_password,
                         registeration_date = data['registeration_date'],
                         type = "student"
-
                         )
         db.session.add(new_guardian)
         new_user.guardians.append(new_guardian)
@@ -281,6 +310,7 @@ def login_or_create():
         if user is not None:
             logger.info('phone number is already existed')
             return jsonify({"status":  "2"})
+
 
         hashed_password = generate_password_hash(data['password'], method= HASHINGMETHOD)
         new_permission = Permission(
