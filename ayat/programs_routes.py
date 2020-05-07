@@ -9,7 +9,14 @@ from ayat import app, db
 from datetime import  date
 
 from flask_cors import  cross_origin
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s : %(name)s : %(levelname)s : %(message)s')
+file_handler = logging.FileHandler('logging.log')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 
 @app.route('/v1/programs', methods=['POST'])
 @cross_origin()
@@ -17,6 +24,7 @@ from flask_cors import  cross_origin
 def create_program(current_user):
 
     if not current_user['type'] == 'staff':
+        logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
 
     data = request.get_json()
@@ -44,18 +52,18 @@ def create_program(current_user):
     new_program_prerequisites = data['prerequisite']
 
     for prerequisite in new_program_prerequisites:
-        
+
         new_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name']).first()
         if new_program_prerequisite:
-            new_program.prerequisites.append(new_program_prerequisite) 
+            new_program.prerequisites.append(new_program_prerequisite)
 
 
     new_program_categories = data['program_category']
 
     for category in new_program_categories:
-        
+
         existing_category = Category.query.filter_by(category_name = category['type']).first()
-        
+
         if not existing_category:
             print('not exist')
             new_category = Category(category_name = category['type'])
@@ -73,9 +81,10 @@ def create_program(current_user):
         db.session.add(new_faq)
         new_program.faqs.append(new_faq)
 
-    
+
     db.session.add(new_program)
     db.session.commit()
+    logger.info("porgram is created")
     return jsonify({'status' : 'created'}),200
 
 
@@ -87,6 +96,7 @@ def create_program(current_user):
 def edit_program(current_user,public_id):
 
     if not current_user['type'] == 'staff':
+        logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
 
     data = request.get_json()
@@ -107,18 +117,18 @@ def edit_program(current_user,public_id):
     current_program.requirement_id= 1
                             # ######
 
-    
+
     prerequisites = data['prerequisite']
     for prerequisite in prerequisites:
         current_program_prerequisite = Program.query.filter_by(program_name = prerequisite['name']).first()
         if current_program_prerequisite:
-            current_program.prerequisites.append(current_program_prerequisite) 
+            current_program.prerequisites.append(current_program_prerequisite)
 
     current_program_categories = data['program_category']
     for category in current_program_categories:
 
         existing_category = Category.query.filter_by(category_name = category['type']).first()
-        
+
         if not existing_category:
             print('not exist')
             new_category = Category(category_name = category['type'])
@@ -126,17 +136,18 @@ def edit_program(current_user,public_id):
             new_program.category.append(new_category)
         else:
             new_program.category.append(existing_category)
-    
-      
+
+
     # current_program_faqs = data['FAQ']
     # for faq in current_program_faqs:
     #     current_faq = Faq(question = faq['question'] , answer = faq['answer'])
     #     db.session.add(current_faq)
     #     current_program.faqs.append(current_faq)
 
-    
+
     db.session.add(current_program)
     db.session.commit()
+    logger.info('program is updated')
     return jsonify({'status' : 'created'}),200
 
 
@@ -148,8 +159,9 @@ def retrieve_program(public_id):
     current_program = Program.query.filter_by(public_program_id=public_id).first()
 
     if not current_program :
+        logger.warning("content isn't found")
         return jsonify({'status': "content not found"}),404
-    
+
     #### ??????
     prerequisites = current_program.prerequisites
     prerequisite_list = []
@@ -159,21 +171,20 @@ def retrieve_program(public_id):
 
     program_categories = current_program.category
     category_list = []
-    for category in program_categories: 
+    for category in program_categories:
         category_list.append({"type": category.category_name})
-    
+
 
     program_faqs = current_program.faqs
     faqs_list = []
     for faq in program_faqs:
         faqs_list.append({"question": faq.question,"answer": faq.answer})
 
-
-
+    logger.info("program is successfully retrieved")
     return jsonify({
 
                     'program_name':current_program.program_name,
-                    'prerequisite' : prerequisite_list, 
+                    'prerequisite' : prerequisite_list,
                     'program_level' : current_program.difficulty_level,
                     'program_category': category_list,
                     'price': str(current_program.price),
@@ -191,14 +202,16 @@ def retrieve_program(public_id):
 def delete_program(current_user, public_id):
 
     if not current_user['type'] == 'staff':
+        logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
-    
+
     program_to_delete = Program.query.filter_by(public_program_id=public_id).first()
 
     db.session.delete(program_to_delete)
     db.session.commit()
+    logger.info("program is successfully deleted")
     return jsonify({'status': 'deleted'}),200
-    
+
 
 
 
@@ -209,15 +222,16 @@ def subscribe_to_program(current_user,public_program_id):
 
     selected_user = User.query.filter_by(public_id = current_user['public_id']).first()
     current_program = Program.query.filter_by(public_program_id = public_program_id).first()
- 
+
 
     enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
                                                  student_id=selected_user.user_id
-                                                 ).first() 
+                                                 ).first()
     if enrolled:
+        logger.warning("user is already subscribed")
         return jsonify({'error': 'User is already subscribed'})
-    
-    new_program_enrollment =ProgramEnrollment( 
+
+    new_program_enrollment =ProgramEnrollment(
                                               student = selected_user,
                                               program = current_program,
                                               is_accepted=True,
@@ -225,10 +239,11 @@ def subscribe_to_program(current_user,public_program_id):
                                               )
     db.session.add(new_program_enrollment)
     db.session.commit()
+    logger.info("user successfully enrolled")
     return jsonify({'status' : "enrolled"}),200
-    
 
-    
+
+
 
 @app.route('/v1/programs/<public_program_id>/enrollments',methods=['DELETE'])
 @cross_origin()
@@ -240,10 +255,12 @@ def delete_program_enrollment(current_user,public_program_id):
 
     enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
                                                  student_id=selected_user.user_id
-                                                 ).first() # user_id ??? 
+                                                 ).first() # user_id ???
     if not enrolled:
+        logger.warning("user failed to enroll")
         return jsonify({'error': 'user not enrolled'}),403
 
     db.session.delete(enrolled)
     db.session.commit()
+    logger.info("enrollment deleted")
     return jsonify({'status': 'success'}),200
