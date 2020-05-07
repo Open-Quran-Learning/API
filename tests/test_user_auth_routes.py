@@ -11,9 +11,12 @@ def test_base_url(client):
 
 def test_create_student(client):
     payload = """{
-        "email": "sdacdca@dskca.casd",
-        "password": "sca",
-        "full_name": "dsca",
+        "guardian_email": "adva@sadv.adfva",
+        "guardian_name": "adsva",
+        "guardian_phone": "113413",
+        "email": "testuser@email.com",
+        "password": "testpass123",
+        "full_name": "testuser",
         "phone": "1321431",
         "birth_date": "3222-02-03",
         "gender": true,
@@ -29,9 +32,9 @@ def test_create_student(client):
 
 def test_create_staff(client):
     payload = """{
-        "email": "sdacdca@dskca.casd",
-        "password": "sca",
-        "full_name": "dsca",
+        "email": "testuser@email.com",
+        "password": "testpass123",
+        "full_name": "testuser",
         "phone": "1321431",
         "birth_date": "3222-02-03",
         "gender": true,
@@ -55,9 +58,18 @@ def test_get_all_users(client):
     res = client.get('/v1/users')
     assert res.status_code == 403
 
-# TODO: msg
+
 def test_login(client):
-    pass
+    create_student();
+    payload = """{
+        "action": "login",
+        "email": "testuser@email.com",
+        "password": "testpass123"
+    }"""
+    res = client.post('/v1/users', data=payload)
+    assert res.status_code != 403
+    assert res.status_code != 404
+    assert res.status_code != 500
 
 # TODO: token, msg
 def test_promote_user(client):

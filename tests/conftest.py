@@ -24,3 +24,64 @@ def client(create_app):
 @pytest.fixture
 def runner(create_app):
     return create_app.test_cli_runner()
+
+
+# TODO: commit created user to db and return user's id
+@pytest.fixture
+def create_student(create_app):
+    user = """{
+        "guardian_email": "adva@sadv.adfva",
+        "guardian_name": "adsva",
+        "guardian_phone": "113413",
+        "email": "testuser@email.com",
+        "password": "testpass123",
+        "full_name": "testuser",
+        "phone": "1321431",
+        "birth_date": "3222-02-03",
+        "gender": true,
+        "type": "student",
+        "action": "register_staff",
+        "profile_pic": "default",
+        "country": "Algeria",
+        "registeration_date": "2010-01-01"
+    }"""
+
+
+# TODO: commit user to db and return user's id
+@pytest.fixture
+def create_staff(create_app):
+    staff = """{
+        "email": "teststaff@email.com",
+        "password": "testpass123",
+        "full_name": "teststaff",
+        "phone": "1321431",
+        "birth_date": "3222-02-03",
+        "gender": true,
+        "type": "staff",
+        "action": "register_staff",
+        "profile_pic": "default",
+        "country": "Algeria",
+        "registeration_date": "2010-01-01"
+    }"""
+
+
+@pytest.fixture
+def get_jwt_for_testing(type, client):
+    if type == 'staff':
+        create_staff()
+        payload = """{
+            "action": "login",
+            "email": "teststaff@email.com",
+            "password": "testpass123"
+        }"""
+        res = client.post('/v1/users', data=payload)
+    else :
+        create_student()
+        payload = """{
+            "action": "login",
+            "email": "testuser@email.com",
+            "password: "testpass123"
+        }"""
+        res = client.post('/v1/users', data=payload)
+    
+    return res.jwt
