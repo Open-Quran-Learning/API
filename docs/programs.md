@@ -10,50 +10,53 @@
 
 ```json
 {
-  "JWT": "fg5562ase84c4",
 
-  "program_name": "<Name example>",
+   "x-access-token": "fg5562ase84c4",
+   "program_name": "<Name example>",
 
-  "prerequisite": [
-    {
-      "name": "name example"
-    },
-    {
-      "name": "name example"
-    }
-  ],
-  "program_level": "<Difficulty>",
+    "prerequisite": [
+      {
+        "name": "name of already exist program"
+      },
+      {
+        "name": "name of already exist program"
+      }
+    ],
+    "program_level": "<Difficulty>",
 
-  "program_category": [
-    {
-      "type": "example"
-    },
-    {
-      "type": "example"
-    }
-  ],
+    "program_category": [
+      {
+        "type": "text"
+      },
+      {
+        "type": "text"
+      }
+    ],
 
-  "price": "$$$",
+    "price": "551",
 
-  "program_pic": "<Local Pic>",
+    "program_pic": "<Pic>",
 
-  "FAQ": [
-    {
-      "question": "Text",
-      "answer": "Text"
-    },
-    {
-      "question": "Text",
-      "answer": "Text"
-    }
-  ],
+    "FAQ": [
+      {
+        "question": "Text",
+        "answer": "Text"
+      },
+      {
+        "question": "Text",
+        "answer": "Text"
+      }
+    ],
 
-  "program_cover": "<Local pic>",
+    "program_cover": "<Local pic>",
 
-  "Program_description": "text example",
+    "Program_description": "text example",
 
-  "available": "<true as a default boolean value>"
+    "available": true
+
 }
+
+
 ```
 
 ##### Success response:
@@ -62,7 +65,8 @@
 
 ```json
 {
-  "status": "created"
+  "status": "created",
+  "program_public_id": "e903928c-9a4c-43ca-aa56-12de83fde5a9",
 }
 ```
 
@@ -85,50 +89,55 @@
 ##### Payload
 
 ```json
+
 {
-  "JWT": "adfgv5erw85s3",
-  "program_name": "name example",
 
-  "prerequisite": [
-    {
-      "type": "example"
-    },
-    {
-      "type": "example"
-    }
-  ],
-  "program_level": "<Difficulty>",
+   "x-access-token": "fg5562ase84c4",
+   "program_name": "<Name example>",
 
-  "program_category": [
-    {
-      "type": "example"
-    },
-    {
-      "type": "example"
-    }
-  ],
+    "prerequisite": [
+      {
+        "name": "name of already exist program"
+      },
+      {
+        "name": "name of already exist program"
+      }
+    ],
+    "program_level": "<Difficulty>",
 
-  "price": "$$$",
+    "program_category": [
+      {
+        "type": "text"
+      },
+      {
+        "type": "text"
+      }
+    ],
 
-  "program_pic": "<Local Pic>",
+    "price": "551",
 
-  "FAQ": [
-    {
-      "question": "Text",
-      "answer": "Text"
-    },
-    {
-      "question": "Text",
-      "answer": "Text"
-    }
-  ],
+    "program_pic": "<Pic>",
 
-  "program_cover": "<Local pic>",
+    "FAQ": [
+      {
+        "question": "Text",
+        "answer": "Text"
+      },
+      {
+        "question": "Text",
+        "answer": "Text"
+      }
+    ],
 
-  "Program_description": "text example",
+    "program_cover": "<Local pic>",
 
-  "available": "<true as a default boolean value>"
+    "Program_description": "text example",
+
+    "available": true
+
 }
+
+
 ```
 
 #### Success responce:
@@ -233,7 +242,7 @@ code: **`200`**
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
+  "x-access-token": "adfgv5erw85s3",
 }
 ```
 
@@ -256,6 +265,14 @@ code: **`200`**
   "status": "Forbidden"
 }
 ```
+or
+
+```json
+{
+  "status": "program not found"
+}
+
+```
 
 <hr />
 
@@ -267,7 +284,7 @@ code: **`200`**
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
+  "x-access-token": "adfgv5erw85s3",
   "public_program_id": "{id}"
 }
 ```
@@ -286,7 +303,7 @@ code: **`200`**
 
 ```json
 {
-  "error": "<Duplicate resource codes: 5>"
+  "error": "'User is already subscribed"
 }
 ```
 
@@ -296,7 +313,7 @@ or
 
 ```json
 {
-  "error": "user is unauthorized"
+  "error": "you are a staff member"
 }
 ```
 
@@ -310,7 +327,7 @@ or
 
 ```json
 {
-  "JWT": "adfgv5erw85s3",
+  "x-access-token": "adfgv5erw85s3",
 }
 ```
 
@@ -328,16 +345,8 @@ or
 
 ```json
 {
-  "error": "<Duplicate resource codes: 6>"
+  "error": "User not enrolled "
 }
 ```
 
-or
 
-##### code: **`403`**
-
-```json
-{
-  "error": "user is unauthorized"
-}
-```

@@ -1,5 +1,9 @@
 ### Users
 
+#### Any "x-access-token" should be added to the header of the token not the body
+#### Any "public_id" can be retrieved from the route, you don't have to put it inside the payload
+
+
 <hr />
 
 #### Retrieve all users
@@ -10,7 +14,7 @@
 
 ```Json
 {
-    "jwt": "65416584846465644546"
+    "x-access-token": "65416584846465644546"
 }
 ```
 
@@ -20,7 +24,35 @@ code : **`200`**
 
 ```Json
 {
-    "users": [...] 
+    
+  "users": [
+    {
+      "birth_date": "Sat, 16 May 2015 00:00:00 GMT",
+      "country_name": "example",
+      "email": "ex1pleamssdasd",
+      "gender": false,
+      "is_activated": false,
+      "phone_number": "612s1211",
+      "profile_picture": "2d",
+      "public_id": "40dd1b7a-96c2-4f73-9e1c-dc22bdbb3e56",
+      "registeration_date": "Sat, 16 May 2015 00:00:00 GMT",
+      "type": "staff"
+    },
+    {
+      "birth_date": "Sat, 16 May 2015 00:00:00 GMT",
+      "country_name": "example",
+      "email": "examplsdfeasdasd",
+      "gender": false,
+      "is_activated": false,
+      "phone_number": "611211",
+      "profile_picture": "2d",
+      "public_id": "0758ef45-bde5-41f6-b80e-6188b8022183",
+      "registeration_date": "Sat, 16 May 2015 00:00:00 GMT",
+      "type": "staff"
+    },
+      
+  ]
+
 }
 ```
 
@@ -44,10 +76,12 @@ code: **`403`**
 
 ```Json
 {
-    "jwt": "65416584846465644546",
-    "public_id": "123123
+    "x-access-token": "65416584846465644546",
+    "public_id": "123123"
 }
 ```
+
+
 
 ##### Success Response:
 
@@ -55,7 +89,18 @@ code : **`200`**
 
 ```Json
 {
-    //user data.
+   "user": {
+    "birth_date": "Sat, 16 May 2015 00:00:00 GMT",
+    "country_name": "example",
+    "email": "examplsdfeasdasd",
+    "gender": false,
+    "is_activated": false,
+    "phone_number": "611211",
+    "profile_picture": "2d",
+    "public_id": "0758ef45-bde5-41f6-b80e-6188b8022183",
+    "registeration_date": "Sat, 16 May 2015 00:00:00 GMT",
+    "type": "staff"
+  }
 }
 ```
 
@@ -91,9 +136,15 @@ code : **`200`**
 
 ```Json
 {
-    "jwt": "65416584846465644546",
-    "public_id": "123123"
-    //other user data.
+  "birth_date": "Sat, 16 May 2015 00:00:00 GMT",
+  "country_name": "example",
+  "email": "explsaddfeasdasd",
+  "gender": false,
+  "name": "example",
+  "phone_number": "123",
+  "profile_picture": "2d",
+  "public_id": "735b3f64-afcf-4b42-b255-14bf8b3a5bc0",
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
 }
 ```
 
@@ -117,17 +168,32 @@ code: **`403`**
 
 ```Json
 {
-    "action":   "register",
-    "user_id":  "example",
+    "action":   "register_student",
     "full_name":  "example",
-    "email":  "example",
+    "email":  "explsaddfeasdasd",
     "country":  "example",
-    "phone":  61111,
-    "profile_pic": "https://ayatsource.com/default.png",
-    "birth_date":   "date",
-    "gender":   "male",
+    "phone":  123,
+    "profile_pic": "2d",
+    "birth_date":   "2015-05-16",
+	"gender": false,
     "password":   "464468",
-    "registeration_date":   "20/2/2020"
+    "registeration_date":   "2015-05-16"
+}
+```
+or
+
+```Json
+{
+    "action":   "register_staff",
+    "full_name":  "example",
+    "email":  "explsaddfeasdasd",
+    "country":  "example",
+    "phone":  123,
+    "profile_pic": "2d",
+    "birth_date":   "2015-05-16",
+	"gender": false,
+    "password":   "464468",
+    "registeration_date":   "2015-05-16"
 }
 ```
 
@@ -145,7 +211,14 @@ or
 
 ```Json
 {
-    "status":  "<Duplicate resource codes> "
+    "status":  "Email already exists"
+}
+```
+or
+
+```Json
+{
+    "status":  "Phone already exists"
 }
 ```
 
@@ -158,13 +231,15 @@ or
 ##### Payload:
 
 ```Json
+
 {
-    "jwt":   "ffff",
-    "email":  "example",
-    "country":  "example",
-    "phone":  61111,
+    "x-access-token": "65416584846465644546",
+    "full_name":  "exaaklsfmple",
+    "email":  "edlsdfdkfdfeasdasd",
+    "country":  "exsdkf123ample",
+    "phone":  "3211kd23",
     "profile_pic": "https://ayatsource.com/default.png",
-    "birth_date":   "date",
+    "birth_date":   "2015-05-16",
     "password":   "464468"
 }
 ```
@@ -180,13 +255,18 @@ code **`200`**
 ```
 
 or
+```Json
+{
+    "status":  "Email already exists"
+}
+```
+or
 
 ```Json
 {
-    "status":  "<Duplicate resource codes>"
+    "status":  "Phone already exists"
 }
 ```
-
 <hr />
 
 #### Delete a user
@@ -197,7 +277,7 @@ or
 
 ```Json
 {
-    "jwt":   "ffff"
+    "x-access-token":   "ffff"
 }
 ```
 
@@ -210,3 +290,13 @@ code **`200`**
     "status":  "deleted"
 }
 ```
+or
+
+```Json
+    {"status": "user is unauthorized"}
+```
+or 
+```Json
+    {"status": "no user found"}
+```
+
