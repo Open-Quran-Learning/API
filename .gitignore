@@ -133,3 +133,6 @@ dmypy.json
 
 # Pychram files
 .idea
+
+# Pytest files
+.pytest_cache
