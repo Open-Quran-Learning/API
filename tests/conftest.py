@@ -21,14 +21,9 @@ def client(create_app):
     return create_app.test_client()
 
 
+# TODO: commit created user to db
 @pytest.fixture
-def runner(create_app):
-    return create_app.test_cli_runner()
-
-
-# TODO: commit created user to db and return user's id
-@pytest.fixture
-def create_student(create_app):
+def create_student():
     user = """{
         "guardian_email": "adva@sadv.adfva",
         "guardian_name": "adsva",
@@ -47,9 +42,9 @@ def create_student(create_app):
     }"""
 
 
-# TODO: commit user to db and return user's id
+# TODO: commit user to db
 @pytest.fixture
-def create_staff(create_app):
+def create_staff():
     staff = """{
         "email": "teststaff@email.com",
         "password": "testpass123",
@@ -84,4 +79,4 @@ def get_jwt_for_testing(type, client):
         }"""
         res = client.post('/v1/users', data=payload)
     
-    return res.jwt
+    return res.token

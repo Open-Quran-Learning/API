@@ -50,26 +50,26 @@ def test_create_staff(client):
 
 # TODO: add token, assert result(user)
 def test_get_invalid_user(client):
-    res = client.get('/v1/users/123', data="JWT")
+    res = client.get('/v1/users/123')
     assert res.status_code == 403
 
 # TODO: add token, assert how many users, assert msg
 def test_get_all_users(client):
-    res = client.get('/v1/users')
-    assert res.status_code == 403
+    jwt = get_jwt_for_testing(type='staff')
+    res = client.get('/v1/users', data=jwt)
+    assert res.status_code == 200
 
 
 def test_login(client):
-    create_student();
+    create_student()
     payload = """{
         "action": "login",
         "email": "testuser@email.com",
         "password": "testpass123"
     }"""
     res = client.post('/v1/users', data=payload)
-    assert res.status_code != 403
-    assert res.status_code != 404
-    assert res.status_code != 500
+    assert res.status_code == 200
+    assert res.email == payload['email']
 
 # TODO: token, msg
 def test_promote_user(client):
