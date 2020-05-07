@@ -1,5 +1,8 @@
 ### Programs
 
+#### Any "x-access-token" should be added to the header of the token not the body
+#### Any "public_id" can be retrieved from the route, you don't have to put it inside the payload
+
 <hr/>
 
 #### Create a program
