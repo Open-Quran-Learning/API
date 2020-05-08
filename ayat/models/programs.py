@@ -5,26 +5,25 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from ayat import db
 
-
 program_skill = db.Table('program_skill', db.Model.metadata,
                          db.Column('program_skill_id', db.Integer, primary_key=True),
                          db.Column('program_id', db.Integer, db.ForeignKey('program.program_id')),
                          db.Column('skill_id', db.SMALLINT, db.ForeignKey('skill.skill_id')))
 
-program_faqs = db.Table('program_faqs',  db.Model.metadata,
+program_faqs = db.Table('program_faqs', db.Model.metadata,
                         db.Column('program_faq_id', db.SMALLINT, primary_key=True),
                         db.Column('faq_id', db.Integer, db.ForeignKey('faq.faq_id')),
                         db.Column('program_id', db.Integer, db.ForeignKey('program.program_id')))
 
-program_category = db.Table('program_category',  db.Model.metadata,
+program_category = db.Table('program_category', db.Model.metadata,
                             db.Column('program_category_id', db.SMALLINT, primary_key=True),
                             db.Column('category_id', db.Integer, db.ForeignKey('category.category_id')),
                             db.Column('program_id', db.Integer, db.ForeignKey('program.program_id')))
 
-program_prerequisite = db.Table('program_prerequisite',  db.Model.metadata,
-                        db.Column('prerequisite_id', db.SMALLINT, primary_key=True),
-                        db.Column('dependency_id', db.Integer, db.ForeignKey('program.program_id')),
-                        db.Column('program_id', db.Integer, db.ForeignKey('program.program_id')))
+program_prerequisite = db.Table('program_prerequisite', db.Model.metadata,
+                                db.Column('prerequisite_id', db.SMALLINT, primary_key=True),
+                                db.Column('dependency_id', db.Integer, db.ForeignKey('program.program_id')),
+                                db.Column('program_id', db.Integer, db.ForeignKey('program.program_id')))
 
 
 ############################################################################
