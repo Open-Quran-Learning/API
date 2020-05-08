@@ -128,9 +128,9 @@ def promote_user(current_user, public_id):
     #     return jsonify({"error": "user is unauthorized"}), 403
     if (not current_user['type'] == 'staff') and (not current_user['public_id'] == str(public_id)):
         logger.warning('user is unauthorized')
-        return jsonify({"error": "user is unauthorized"}), 403
+        return jsonify({"status": "user is unauthorized"}), 403
     elif (not current_user['public_id'] == str(public_id)) and current_user['type'] == 'student':
-        return jsonify({"error": "user is unauthorized"}), 403
+        return jsonify({"status": "user is unauthorized"}), 403
 
     user_email = data['email']
     user = User.query.filter_by(email=user_email).first()
