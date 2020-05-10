@@ -10,7 +10,7 @@
 
 `api.ayat.com/v1/users` **`GET`**
 
-##### Payload:
+##### Header:
 
 ```Json
 {
@@ -62,7 +62,7 @@ code: **`403`**
 
 ```json
 {
-  "error": "user is unauthorized"
+  "message": "user is unauthorized"
 }
 ```
 
@@ -72,12 +72,11 @@ code: **`403`**
 
 `api.ayat.com/v1/users/{id}` **`GET`**
 
-##### Payload:
+##### Header:
 
 ```Json
 {
-    "x-access-token": "65416584846465644546",
-    "public_id": "123123"
+    "x-access-token": "65416584846465644546"
 }
 ```
 
@@ -110,7 +109,7 @@ code: **`403`**
 
 ```json
 {
-  "error": "user is unauthorized"
+  "message": "user is unauthorized"
 }
 ```
 
@@ -154,9 +153,26 @@ code: **`403`**
 
 ```json
 {
-  "error": "user is unauthorized"
+  "message": "user is unauthorized"
 }
 ```
+or
+code: **`404`**
+
+```json
+{
+  "message": "user not found"
+}
+```
+or
+code: **`404`**
+
+```json
+{
+  "message": "invalid password"
+}
+```
+
 
 <hr />
 
@@ -211,14 +227,14 @@ or
 
 ```Json
 {
-    "status":  "Email already exists"
+    "status":  "1"
 }
 ```
 or
 
 ```Json
 {
-    "status":  "Phone already exists"
+    "status":  "2"
 }
 ```
 
@@ -257,14 +273,14 @@ code **`200`**
 or
 ```Json
 {
-    "status":  "Email already exists"
+    "status":  "1"
 }
 ```
 or
 
 ```Json
 {
-    "status":  "Phone already exists"
+    "status":  "2"
 }
 ```
 <hr />
