@@ -12,7 +12,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s : %(name)s : %(levelname)s : %(message)s')
+formatter = logging.Formatter(
+    '%(asctime)s : %(name)s : %(levelname)s : %(message)s')
 file_handler = logging.FileHandler('logging.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
@@ -35,24 +36,36 @@ def create_program(current_user):
         difficulty_level=data['program_level'],
         price=data['price'],
         program_picture=data['program_pic'],
+        is_open_to_public=data['is_open_to_public'], #new
         program_cover=data['program_cover'],
         program_description=data['Program_description'],
         available=data['available'],
-        is_open_to_public=True,
-        start_date='2015-05-16',
-        end_date='2015-05-16',
-        requirement_id=1,
+        start_date=data['start_date'], #new
+        end_date=data['end_date'], #new
+        requirement_id = 1 # dumy code 
+
         # ######
 
     )
 
     # db.session.add(new_program)
 
+    #new
+    new_requirement = Requirement(
+
+        min_age=data['requirement_min_age'],
+        max_age=data['requirement_max_age'],
+        gender=data['requirement_gender'],
+    )
+    db.session.add(new_requirement)
+    new_program.requirement.append(new_requirement)
+
     new_program_prerequisites = data['prerequisite']
 
     for prerequisite in new_program_prerequisites:
 
-        new_program_prerequisite = Program.query.filter_by(program_name=prerequisite['name']).first()
+        new_program_prerequisite = Program.query.filter_by(
+            program_name=prerequisite['name']).first()
         if new_program_prerequisite:
             new_program.prerequisites.append(new_program_prerequisite)
 
@@ -60,7 +73,8 @@ def create_program(current_user):
 
     for category in new_program_categories:
 
-        existing_category = Category.query.filter_by(category_name=category['type']).first()
+        existing_category = Category.query.filter_by(
+            category_name=category['type']).first()
 
         if not existing_category:
             print('not exist')
@@ -96,7 +110,11 @@ def edit_program(current_user, public_id):
 
     data = request.get_json()
 
-    current_program = Program.query.filter_by(public_program_id=str(public_id)).first()
+    current_program = Program.query.filter_by(
+        public_program_id=str(public_id)).first()
+
+    if not current_program:
+        return jsonify({"status": "program not found"}), 404
 
     current_program.program_name = data['program_name']
     current_program.difficulty_level = data['program_level']
@@ -113,14 +131,16 @@ def edit_program(current_user, public_id):
 
     prerequisites = data['prerequisite']
     for prerequisite in prerequisites:
-        current_program_prerequisite = Program.query.filter_by(program_name=prerequisite['name']).first()
+        current_program_prerequisite = Program.query.filter_by(
+            program_name=prerequisite['name']).first()
         if current_program_prerequisite:
             current_program.prerequisites.append(current_program_prerequisite)
 
     current_program_categories = data['program_category']
     for category in current_program_categories:
 
-        existing_category = Category.query.filter_by(category_name=category['type']).first()
+        existing_category = Category.query.filter_by(
+            category_name=category['type']).first()
 
         if not existing_category:
             print('not exist')
@@ -146,13 +166,14 @@ def edit_program(current_user, public_id):
 @app.route('/v1/programs/<public_id>', methods=['GET'])
 @cross_origin()
 def retrieve_program(public_id):
-    current_program = Program.query.filter_by(public_program_id=public_id).first()
+    current_program = Program.query.filter_by(
+        public_program_id=public_id).first()
 
     if not current_program:
         logger.warning("content isn't found")
         return jsonify({'status': "content not found"}), 404
 
-    #### ??????
+    # ??????
     prerequisites = current_program.prerequisites
     prerequisite_list = []
     for prerequisite in prerequisites:
@@ -193,11 +214,13 @@ def delete_program(current_user, public_id):
         logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
 
-    current_program = Program.query.filter_by(public_program_id=public_id).first()
+    current_program = Program.query.filter_by(
+        public_program_id=public_id).first()
     if current_program is None:
-        return jsonify({"status": "program not found"}), 403
+        return jsonify({"status": "program not found"}), 404
 
-    program_to_delete = Program.query.filter_by(public_program_id=public_id).first()
+    program_to_delete = Program.query.filter_by(
+        public_program_id=public_id).first()
 
     db.session.delete(program_to_delete)
     db.session.commit()
@@ -212,8 +235,10 @@ def subscribe_to_program(current_user, public_program_id):
     if current_user['type'] == 'staff':
         return jsonify({"status": "you are a staff member"}), 403
 
-    selected_user = User.query.filter_by(public_id=current_user['public_id']).first()
-    current_program = Program.query.filter_by(public_program_id=public_program_id).first()
+    selected_user = User.query.filter_by(
+        public_id=current_user['public_id']).first()
+    current_program = Program.query.filter_by(
+        public_program_id=public_program_id).first()
 
     enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
                                                  student_id=selected_user.user_id
@@ -238,8 +263,10 @@ def subscribe_to_program(current_user, public_program_id):
 @cross_origin()
 @token_required
 def delete_program_enrollment(current_user, public_program_id):
-    selected_user = User.query.filter_by(public_id=current_user['public_id']).first()
-    current_program = Program.query.filter_by(public_program_id=public_program_id).first()
+    selected_user = User.query.filter_by(
+        public_id=current_user['public_id']).first()
+    current_program = Program.query.filter_by(
+        public_program_id=public_program_id).first()
 
     enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
                                                  student_id=selected_user.user_id
