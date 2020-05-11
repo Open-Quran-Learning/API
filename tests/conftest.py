@@ -1,8 +1,10 @@
 import pytest
 from ayat import app, db
 from ayat.models.users import *
+from ayat.models.programs import *
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
+
 
 @pytest.fixture
 def create_app():
@@ -38,7 +40,7 @@ def create_student(email, phone):
         profile_picture="default",
         birth_date="2020-01-01",
         gender=True,
-        password= generate_password_hash("passworddd", method="sha256"),
+        password=generate_password_hash("passworddd", method="sha256"),
         registeration_date="2010-01-01",
         type="student"
     )
@@ -87,3 +89,10 @@ def generate_jwt(public_id, email, type):
                         'type': type}, app.config['SECRET_KEY'])
 
     return token
+
+
+# TODO
+def create_program(program_name):
+    """Testing purpose for now """
+    course_id = '123'
+    return course_id
