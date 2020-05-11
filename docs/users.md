@@ -191,7 +191,7 @@ code: **`404`**
     "phone":  123,
     "profile_pic": "2d",
     "birth_date":   "2015-05-16",
-	"gender": false,
+	  "gender": false,
     "password":   "464468",
     "registeration_date":   "2015-05-16"
 }

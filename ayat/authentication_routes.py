@@ -196,15 +196,9 @@ def delete_user(current_user, public_id):
 @cross_origin()
 def login_or_create():
     data = request.get_json(force=True)
-    print(data)
+        
     # login checking
-    print('this is request')
-    print(request)
-    print('this is data')
-    print(data)
-    # if not data['action'] :
-    #     return jsonify({"error": "user is unauthorized"}), 403
-
+   
     if data['action'] == 'login':
 
         user_email = data['email']
@@ -280,8 +274,14 @@ def login_or_create():
         new_user.guardians.append(new_guardian)
         db.session.add(new_user)
         db.session.commit()
+
+        ###############
+
+
+
         logger.info('user succeeded to register')
-        return jsonify({'status': 'created'}), 200
+        return jsonify({'status': 'created',
+                        'public_id': new_user.public_id,}), 200
 
     if data['action'] == 'register_staff':
 
@@ -320,4 +320,5 @@ def login_or_create():
         db.session.add(new_user)
         db.session.commit()
         logger.info('user succeeded to register')
-        return jsonify({'status': 'created'}), 200
+        return jsonify({'status': 'created',
+                        'public_id': new_user.public_id,}), 200
