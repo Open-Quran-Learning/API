@@ -295,3 +295,91 @@ def test_delete_program_with_unprivileged_user(client):
 
     assert res.status_code == 403
     assert b'forbidden' in res.data
+
+
+def test_student_subscribing_to_program(client):
+    student = create_student('student99@email.com', '1548732')
+    program = create_program('test program')
+    jwt = generate_jwt(
+        student['public_id'],
+        student['email'],
+        student['type']
+    )
+
+    res = client.post(
+        f'/v1/programs/{program["public_id"]}/enrollments',
+        headers={'x-access-token': jwt}
+    )
+    assert res.status_code == 200
+    assert b'enrolled' in res.data
+
+
+def test_staff_subscribing_to_program(client):
+    staff = create_staff('staff44@email.com', '44692310')
+    program = create_program('test program')
+    jwt = generate_jwt(
+        staff['public_id'],
+        staff['email'],
+        staff['type']
+    )
+
+    res = client.post(
+        f'/v1/programs/{program["public_id"]}/enrollments',
+        headers={'x-access-token': jwt}
+    )
+    assert res.status_code == 403
+    assert b'you are a staff member' in res.data
+
+
+def test_student_subscribing_to_program_again(client):
+    student = create_student('student66@email.com', '54616567')
+    program = create_program('test program')
+    jwt = generate_jwt(
+        student['public_id'],
+        student['email'],
+        student['type']
+    )
+
+    res = client.post(
+        f'/v1/programs/{program["public_id"]}/enrollments',
+        headers={'x-access-token': jwt}
+    )
+
+    assert res.status_code == 403  # there is no code in docs and programs_routes.py file
+    assert b'User is already subscribed' in res.data
+
+
+def test_enrolled_student_cancel_subscription(client):
+    student = create_student('student33@email.com', '793001546')
+    program = create_program('test program')
+    jwt = generate_jwt(
+        student['public_id'],
+        student['email'],
+        student['type']
+    )
+
+    res = client.delete(
+        f'/v1/programs/{program["public_id"]}/enrollments',
+        headers={'x-access-token': jwt}
+    )
+
+    assert res.status_code == 200
+    assert b'success' in res.data
+
+
+def test_not_enrolled_student_cancel_subscription(client):
+    student = create_student('student11@email.com', '67946130')
+    program = create_program('test program')
+    jwt = generate_jwt(
+        student['public_id'],
+        student['email'],
+        student['type']
+    )
+
+    res = client.delete(
+        f'/v1/programs/{program["public_id"]}/enrollments',
+        headers={'x-access-token': jwt}
+    )
+
+    assert res.status_code == 403
+    assert b'user not enrolled' in res.data
