@@ -1,8 +1,7 @@
-from flask_sqlalchemy import SQLAlchemy
+
 from sqlalchemy.dialects.postgresql import UUID
 import uuid
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+
 from ayat import db
 
 program_skill = db.Table('program_skill', db.Model.metadata,
