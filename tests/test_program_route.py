@@ -1,14 +1,6 @@
 from .conftest import create_staff, create_student, generate_jwt, create_program
 
 
-# Abd-Elsattar
-# TODO: test_student_subscribing_to_program
-# TODO: test_staff_subscribing_to_program
-# TODO: test_student_subscribing_to_program_again
-# TODO: test_enrolled_student_cancel_subscription
-# TODO: test_not_enrolled_student_cancel_subscription
-
-
 def test_staff_creating_program(client):
     payload = """{
         "program_name": "program name",
