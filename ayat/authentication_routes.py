@@ -281,7 +281,8 @@ def login_or_create():
         db.session.add(new_user)
         db.session.commit()
         logger.info('user succeeded to register')
-        return jsonify({'status': 'created'}), 200
+        return jsonify({'status': 'created',
+                        "public_id" : new_user.public_id}), 200
 
     if data['action'] == 'register_staff':
 
@@ -320,4 +321,5 @@ def login_or_create():
         db.session.add(new_user)
         db.session.commit()
         logger.info('user succeeded to register')
-        return jsonify({'status': 'created'}), 200
+        return jsonify({'status': 'created',
+                        "public_id" : new_user.public_id}), 200
