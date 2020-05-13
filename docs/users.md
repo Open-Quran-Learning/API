@@ -219,7 +219,8 @@ code : **`200`**
 
 ```Json
 {
-    "status":  "created"
+    "status":  "created",
+    "public_id": "example"
 }
 ```
 
