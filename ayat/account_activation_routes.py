@@ -29,11 +29,11 @@ def confirm_email(public_id):
     data = request.get_json(force=True)
 
     current_user = User.query.filter_by(public_id=public_id ).first()
-    if request.method == "POST":
-        current_user_email = data["email"]
-        user_email_check = User.query.filter_by(email= current_user_email ).first()
-        if user_email_check is not None and str(current_user.email) != str(user_email_check.email):
-            return jsonify({"status":"email exists"})
+    # if request.method == "POST":
+    #     current_user_email = data["email"]
+    #     user_email_check = User.query.filter_by(email= current_user_email ).first()
+    #     if user_email_check is not None and str(current_user.email) != str(user_email_check.email):
+    #         return jsonify({"status":"email exists"})
 
     user_email = current_user.email
     token_email = serializer.dumps(user_email, salt= "email_confirm")
@@ -61,6 +61,9 @@ def confirm_email_token(token, public_id):
 
     try:
         email = serializer.loads(token, salt= "email_confirm", max_age= twoHours)
+        user_to_activate = User.query.filter_by(public_id = public_id).first()
+        user_to_activate.is_activated = True
+        db.session.commit()
     
     except SignatureExpired:
          return jsonify({"message":"token has expired"}),401
