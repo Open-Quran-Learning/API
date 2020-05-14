@@ -295,7 +295,11 @@ def login_or_create():
 
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
+<<<<<<< HEAD
                         'public_id': new_user.public_id,}), 200
+=======
+                        "public_id" : new_user.public_id}), 200
+>>>>>>> programRoutes
 
     if data['action'] == 'register_staff':
 
@@ -345,4 +349,8 @@ def login_or_create():
 
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
+<<<<<<< HEAD
                         'public_id': new_user.public_id,}), 200
+=======
+                        "public_id" : new_user.public_id}), 200
+>>>>>>> programRoutes

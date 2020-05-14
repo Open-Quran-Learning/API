@@ -188,12 +188,14 @@ code: **`404`**
     "full_name":  "example",
     "email":  "explsaddfeasdasd",
     "country":  "example",
-    "phone":  123,
+    "phone":  "123",
     "profile_pic": "2d",
     "birth_date":   "2015-05-16",
 	  "gender": false,
     "password":   "464468",
-    "registeration_date":   "2015-05-16"
+    "registeration_date":   "2015-05-16",
+    "guardian_email" : "111d19",
+    "guardian_phone" : "11d119"
 }
 ```
 or
@@ -204,12 +206,13 @@ or
     "full_name":  "example",
     "email":  "explsaddfeasdasd",
     "country":  "example",
-    "phone":  123,
+    "phone":  "123",
     "profile_pic": "2d",
     "birth_date":   "2015-05-16",
-	"gender": false,
+  	"gender": false,
     "password":   "464468",
-    "registeration_date":   "2015-05-16"
+    "registeration_date":   "2015-05-16",
+    "permission_name": "teacher"
 }
 ```
 
@@ -219,7 +222,8 @@ code : **`200`**
 
 ```Json
 {
-    "status":  "created"
+    "status":  "created",
+    "public_id": "example"
 }
 ```
 

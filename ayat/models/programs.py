@@ -41,7 +41,7 @@ class Program(db.Model):
     available = db.Column(db.Boolean, nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
-    requirement_id = db.Column(db.SMALLINT, db.ForeignKey("requirement.requirement_id"), nullable=False)
+    requirement_id = db.Column(db.SMALLINT, db.ForeignKey("requirement.requirement_id"))
     skills = db.relationship('Skill', secondary=program_skill, backref=db.backref('program', lazy='dynamic'))
     faqs = db.relationship('Faq', secondary=program_faqs, backref=db.backref('program', lazy='dynamic'))
     category = db.relationship('Category', secondary=program_category, backref=db.backref('program', lazy='dynamic'))
@@ -149,7 +149,7 @@ class Requirement(db.Model):
     requirement_id = db.Column(db.SMALLINT, primary_key=True)
     min_age = db.Column(db.SMALLINT, nullable=False)
     max_age = db.Column(db.SMALLINT, nullable=False)
-    gender = db.Column(db.VARCHAR(60), nullable=False)
+    gender = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
         info_text = (f'requirement id: {self.requirement_id}.\t'
@@ -158,7 +158,7 @@ class Requirement(db.Model):
                      f'gender: {self.gender}.\n')
         return info_text
 
-
+    
 class Category(db.Model):
     __tablename__ = "category"
     category_id = db.Column(db.SMALLINT, primary_key=True)

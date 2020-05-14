@@ -19,20 +19,20 @@
 
     "prerequisite": [
       {
-        "name": "name of already exist program"
+        "public_program_id": "e885f927-2b95-4a27-b1c4-223d21f429d0"
       },
       {
-        "name": "name of already exist program"
+        "public_program_id": "e885f927-2b95-4a27-b1c4-223d21f429d0"
       }
     ],
     "program_level": "<Difficulty>",
 
     "program_category": [
       {
-        "type": "text"
+        "type": "tessxt"
       },
       {
-        "type": "text"
+        "type": "tesss2xt"
       }
     ],
 
@@ -55,10 +55,21 @@
 
     "Program_description": "text example",
 
-    "available": true
+    "available": true,
+    "is_open_to_public": true,
+    "start_date" : "2015-05-05",
+    "end_date" : "2015-05-05",
+    "requirement":{
+    	"min_age": 5,
+    	"max_age": 20,
+    	"gender" : false},
+    
+    "skills":[
+    	{"name" : "sdf"},
+    	{"name":"hello"}
+    	]
 
 }
-
 
 ```
 
@@ -92,7 +103,6 @@
 ##### Payload
 
 ```json
-
 {
 
    "x-access-token": "fg5562ase84c4",
@@ -100,20 +110,20 @@
 
     "prerequisite": [
       {
-        "name": "name of already exist program"
+        "public_program_id": "e885f927-2b95-4a27-b1c4-223d21f429d0"
       },
       {
-        "name": "name of already exist program"
+        "public_program_id": "e885f927-2b95-4a27-b1c4-223d21f429d0"
       }
     ],
     "program_level": "<Difficulty>",
 
     "program_category": [
       {
-        "type": "text"
+        "type": "tessxt"
       },
       {
-        "type": "text"
+        "type": "tesss2xt"
       }
     ],
 
@@ -136,10 +146,21 @@
 
     "Program_description": "text example",
 
-    "available": true
+    "available": true,
+    "is_open_to_public": true,
+    "start_date" : "2015-05-05",
+    "end_date" : "2015-05-05",
+    "requirement":{
+    	"min_age": 5,
+    	"max_age": 20,
+    	"gender" : false},
+    
+    "skills":[
+    	{"name" : "sdf"},
+    	{"name":"hello"}
+    	]
 
 }
-
 
 ```
 
@@ -181,47 +202,54 @@ code: **`200`**
 
 ```json
 {
-  "program_name": "name example",
-
-  "prerequisite": [
-    {
-      "type": "example"
-    },
-    {
-      "type": "example"
-    }
-  ],
-  "program_level": "<Difficulty>",
-
-  "program_category": [
-    {
-      "type": "example"
-    },
-    {
-      "type": "example"
-    }
-  ],
-
-  "price": "$$$",
-
-  "program_pic": "<Local Pic>",
-
   "FAQ": [
     {
-      "question": "Text",
-      "answer": "Text"
+      "answer": "Text",
+      "question": "Text"
     },
     {
-      "question": "Text",
-      "answer": "Text"
+      "answer": "Text",
+      "question": "Text"
     }
   ],
-
-  "program_cover": "<Local pic>",
-
   "Program_description": "text example",
-
-  "available": "<true as a default boolean value>"
+  "available": true,
+  "end_date": "Tue, 05 May 2015 00:00:00 GMT",
+  "is_open_to_public": true,
+  "prerequisite": [
+    {"public_program_id":"public_program_id example"},
+    {"public_program_id":"public_program_id example"}
+    ],
+  "price": "551",
+  "program_category": [
+    {
+      "type": "tessxt"
+    },
+    {
+      "type": "tesss2xt"
+    }
+  ],
+  "program_cover": "<Local pic>",
+  "program_level": "<Difficulty>",
+  "program_name": "<Name example>",
+  "program_pic": "<Pic>",
+  "public_program_id": "c8a3608e-bf88-489a-ae63-4e849330d5d6",
+  "requirement": {
+    "requirement": {
+      "gender": false,
+      "max_age": 20,
+      "min_age": 5
+    }
+  },
+  "skills": [
+    {
+      "name": "sdf"
+    },
+    {
+      "name": "hello"
+    }
+  ],
+  "start_date": "Tue, 05 May 2015 00:00:00 GMT"
 }
 ```
 
@@ -236,6 +264,60 @@ code: **`200`**
 ```
 
 <hr/>
+
+### Get all programs
+
+`api.ayat.com/v1/programs` **`GET`**
+
+```json
+
+{
+  "programs": [
+    {
+      "Program_description": "text example",
+      "available": true,
+      "end_date": "Tue, 05 May 2015 00:00:00 GMT",
+      "is_open_to_public": true,
+      "price": "551",
+      "program_category": [
+        {
+          "type": "tessxt"
+        },
+        {
+          "type": "tesss2xt"
+        }
+      ],
+      "program_cover": "<Local pic>",
+      "program_level": "<Difficulty>",
+      "program_name": "<Name example>",
+      "program_pic": "<Pic>",
+      "public_program_id": "62eb63f1-e4d9-41b8-a1dd-fc6ecbee9807",
+      "start_date": "Tue, 05 May 2015 00:00:00 GMT"
+    },
+    {
+      "Program_description": "text example",
+      "available": true,
+      "end_date": "Tue, 05 May 2015 00:00:00 GMT",
+      "is_open_to_public": true,
+      "price": "551",
+      "program_category": [
+        {
+          "type": "tessxt"
+        },
+        {
+          "type": "tesss2xt"
+        }
+      ],
+      "program_cover": "<Local pic>",
+      "program_level": "<Difficulty>",
+      "program_name": "<Name example>",
+      "program_pic": "<Pic>",
+      "public_program_id": "c8a3608e-bf88-489a-ae63-4e849330d5d6",
+      "start_date": "Tue, 05 May 2015 00:00:00 GMT"
+    }
+
+
+```
 
 #### Delete a program
 
