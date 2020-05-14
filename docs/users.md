@@ -212,7 +212,7 @@ or
   	"gender": false,
     "password":   "464468",
     "registeration_date":   "2015-05-16",
-    "permission_name": "teacher"
+    "permission_name": "example <teacher>"
 }
 ```
 
