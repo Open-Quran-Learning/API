@@ -22,13 +22,15 @@ from flask_mail import Message
 
 serializer = URLSafeTimedSerializer("thisissecret")
 
-@app.route("/v1/users/<public_id>/confirm",methods=['POST','GET'])
+@app.route("/v1/users/<public_id>/confirm",methods=['GET']) #'POST',
 @cross_origin()
 def confirm_email(public_id):
 
     data = request.get_json(force=True)
 
     current_user = User.query.filter_by(public_id=public_id ).first()
+    if not current_user:
+        return jsonify({'status': 'user not found'})
     # if request.method == "POST":
     #     current_user_email = data["email"]
     #     user_email_check = User.query.filter_by(email= current_user_email ).first()
@@ -45,7 +47,7 @@ def confirm_email(public_id):
     # send_message(subject="Ayat Email Confirmation",recipients= user_email,content= content,html_content= "<h1>hello</h1>", resource="hello.jpg",resource_type= "jpg")
     
 
-    return jsonify({"message":"sent"})
+    return jsonify({"status":"message was sent"})
 
 
 
@@ -53,7 +55,7 @@ def confirm_email(public_id):
 
 
 
-@app.route("/v1/users/<public_id>/confirm/<token>",methods=['POST','GET'])
+@app.route("/v1/users/<public_id>/confirm/<token>",methods=['GET']) #'POST',
 @cross_origin()
 def confirm_email_token(token, public_id):
 
@@ -66,10 +68,9 @@ def confirm_email_token(token, public_id):
         db.session.commit()
     
     except SignatureExpired:
-         return jsonify({"message":"token has expired"}),401
+         return jsonify({"status":"token has expired"})
     
     except BadTimeSignature:
+        return jsonify({"status":"token is damaged"})
 
-        return jsonify({"message":"token is damaged"}),401
-
-    return jsonify({"message":"confirmed"}),200
+    return jsonify({"status":"confirmed"}),200
