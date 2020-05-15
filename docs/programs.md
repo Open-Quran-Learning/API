@@ -13,8 +13,6 @@
 
 ```json
 {
-
-   "x-access-token": "fg5562ase84c4",
    "program_name": "<Name example>",
 
     "prerequisite": [
