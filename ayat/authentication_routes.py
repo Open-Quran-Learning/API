@@ -293,7 +293,7 @@ def login_or_create():
         try:
             mail.send(msg)  
         except:
-            return jsonify({'message' : 'email is not valide'})
+            return jsonify({'message' : 'email is not valid'})
 
 
         logger.info('user succeeded to register')
@@ -346,7 +346,7 @@ def login_or_create():
         try:
             mail.send(msg)  
         except:
-            return jsonify({'message' : 'email is not valide'})
+            return jsonify({'message' : 'email is not valid'})
 
 
 
