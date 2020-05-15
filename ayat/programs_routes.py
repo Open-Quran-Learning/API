@@ -79,6 +79,7 @@ def create_program(current_user):
     # new_program.requirement.append(new_requirement)
 
     # creating new prerequisites
+    # Can create program without prerequisites
     new_program_prerequisites = data['prerequisite']
 
     for prerequisite in new_program_prerequisites:
@@ -88,7 +89,7 @@ def create_program(current_user):
             if new_program_prerequisite:
                 new_program.prerequisites.append(new_program_prerequisite)
         except:
-            return jsonify({"error": "not a valid requirement public_id "}),404
+            return jsonify({"error": "not a valid requirement public_id "}), 404
 
     # creating new categories
     new_program_categories = data['program_category']
@@ -128,11 +129,11 @@ def create_program(current_user):
         else:
             new_program.skills.append(existing_skill)
 
-    # submiting program
+    # submitting program
     db.session.add(new_program)
     db.session.commit()
 
-    logger.info("porgram is created")
+    logger.info("program is created")
     return jsonify({'status': 'created',
                     'program_public_id': new_program.public_program_id,
                     }), 200
@@ -200,7 +201,7 @@ def edit_program(current_user, public_id):
         if current_program_prerequisite:
             current_program.prerequisites.append(current_program_prerequisite)
 
-   # updating categories
+    # updating categories
     current_program.category = []
     current_program_categories = data['program_category']
     for category in current_program_categories:
@@ -310,7 +311,6 @@ def retrieve_program(public_id):
 @app.route('/v1/programs', methods=['GET'])
 @cross_origin()
 def retrieve_all_programs():
-
     #
     query_list = Program.query.all()
 
