@@ -290,7 +290,10 @@ def login_or_create():
         content = f"Welcome to ayat. \n This is the link to confirm your email which will expire in two hours. \n link : \n {confirmation_link}"
         msg = Message("Ayat Email Confirmation",sender="ayatquraancenter@gmail.com",recipients=user_email.split())
         msg.body = content
-        mail.send(msg)  
+        try:
+            mail.send(msg)  
+        except:
+            return jsonify({'message' : 'email is not valide'})
 
 
         logger.info('user succeeded to register')
@@ -340,7 +343,11 @@ def login_or_create():
         content = f"Welcome to ayat. \n This is the link to confirm your email which will expire in two hours. \n link : \n {confirmation_link}"
         msg = Message("Ayat Email Confirmation",sender="ayatquraancenter@gmail.com",recipients=user_email.split())
         msg.body = content
-        mail.send(msg)  
+        try:
+            mail.send(msg)  
+        except:
+            return jsonify({'message' : 'email is not valide'})
+
 
 
         logger.info('user succeeded to register')
