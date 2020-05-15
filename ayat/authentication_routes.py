@@ -22,7 +22,7 @@ formatter = logging.Formatter('%(asctime)s : %(name)s : %(levelname)s : %(messag
 file_handler = logging.FileHandler('logging.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
-HASHINGMETHOD = "sha256"
+HASHINGMETHOD = os.environ.get('HASHINGMETHOD')
 
 
 def token_required(f):
@@ -295,11 +295,7 @@ def login_or_create():
 
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
-<<<<<<< HEAD
                         'public_id': new_user.public_id,}), 200
-=======
-                        "public_id" : new_user.public_id}), 200
->>>>>>> programRoutes
 
     if data['action'] == 'register_staff':
 
@@ -349,8 +345,4 @@ def login_or_create():
 
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
-<<<<<<< HEAD
                         'public_id': new_user.public_id,}), 200
-=======
-                        "public_id" : new_user.public_id}), 200
->>>>>>> programRoutes
