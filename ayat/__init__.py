@@ -31,4 +31,5 @@ from ayat.models import models
 
 from ayat import helpers
 from ayat import authentication_routes
+from ayat import programs_routes
 from ayat.authorization import authorization_decorators
