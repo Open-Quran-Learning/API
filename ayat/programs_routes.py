@@ -80,16 +80,17 @@ def create_program(current_user):
 
     # creating new prerequisites
     # Can create program without prerequisites
-    new_program_prerequisites = data['prerequisite']
+    if 'prerequisite' in data:
+        new_program_prerequisites = data['prerequisite']
 
-    for prerequisite in new_program_prerequisites:
-        try:
-            new_program_prerequisite = Program.query.filter_by(
-                public_program_id=prerequisite['public_program_id'], ).first()
-            if new_program_prerequisite:
-                new_program.prerequisites.append(new_program_prerequisite)
-        except:
-            return jsonify({"error": "not a valid requirement public_id "}), 404
+        for prerequisite in new_program_prerequisites:
+            try:
+                new_program_prerequisite = Program.query.filter_by(
+                    public_program_id=prerequisite['public_program_id'], ).first()
+                if new_program_prerequisite:
+                    new_program.prerequisites.append(new_program_prerequisite)
+            except:
+                return jsonify({"error": "not a valid requirement public_id "}), 404
 
     # creating new categories
     new_program_categories = data['program_category']
