@@ -91,12 +91,12 @@ def generate_jwt(public_id, email, type):
     return token
 
 
-def create_program(p_name):
+def create_program():
 
     requirement = {
-        'min_age': 15,
-        'max_age': 25,
-        'gender': True
+        'min_age': 10,
+        'max_age': 20,
+        'gender': False
     }
     min_age_requirement_check = Requirement.query.filter_by(
         min_age=requirement['min_age']).first()
@@ -118,15 +118,14 @@ def create_program(p_name):
         requirement_to_add = min_age_requirement_check
 
     new_program = Program(
-
         public_program_id=str(uuid.uuid4()),
-        program_name=p_name,
+        program_name='TestProg',
         difficulty_level='Easy',
         price=150,
         program_picture='program_pic',
         is_open_to_public=True,
         program_cover='program_cover',
-        program_description='description text',
+        program_description='description text prog',
         available=True,
         start_date='2020-05-15',
         end_date='2020-07-19',
@@ -149,14 +148,7 @@ def create_program(p_name):
     #     if new_program_prerequisite:
     #         new_program.prerequisites.append(new_program_prerequisite)
 
-    new_program_categories = {
-        {
-            'type': 'text1'
-        },
-        {
-            'type': 'text2'
-        }
-    }
+    new_program_categories = [{'type': 'text8'}, {'type': 'text10'}]
 
     for category in new_program_categories:
 
@@ -171,7 +163,7 @@ def create_program(p_name):
         else:
             new_program.category.append(existing_category)
 
-    new_program_faqs = {
+    new_program_faqs = [
           {
             'question': 'Text',
             'answer': 'Text'
@@ -180,21 +172,21 @@ def create_program(p_name):
             'question': 'Text',
             'answer': 'Text'
           }
-    }
+    ]
 
     for faq in new_program_faqs:
         new_faq = Faq(question=faq['question'], answer=faq['answer'])
         db.session.add(new_faq)
         new_program.faqs.append(new_faq)
 
-    new_program_skills = {
+    new_program_skills = [
         {
             'name': 'Pla'
         },
         {
             'name': 'PlaPla'
         }
-    }
+    ]
     for skill in new_program_skills:
         existing_skill = Skill.query.filter_by(
             skill_name=skill['name']).first()
@@ -209,4 +201,6 @@ def create_program(p_name):
     db.session.add(new_program)
     db.session.commit()
 
-    return new_program
+    return {'program_name': new_program.program_name,
+            'program_public_id': new_program.public_program_id,
+            }
