@@ -29,8 +29,8 @@ def create_program(current_user):
 
     #####################################
 
-    data = request.get_json()
-    # to create uniqe requirements
+    data = request.get_json(force=True)
+    # to create unique requirements
     requirement = data['requirement']
     min_age_requirement_check = Requirement.query.filter_by(
         min_age=requirement['min_age']).first()
@@ -53,7 +53,6 @@ def create_program(current_user):
 
     # creating new program
     new_program = Program(
-
         public_program_id=str(uuid.uuid4()),
         program_name=data['program_name'],
         difficulty_level=data['program_level'],
@@ -65,11 +64,7 @@ def create_program(current_user):
         available=data['available'],
         start_date=data['start_date'],  # new
         end_date=data['end_date'],  # new
-        # requirement_id = 1,
         requirement=requirement_to_add  # new
-
-        # ######
-
     )
 
     # db.session.add(new_program)
@@ -148,7 +143,7 @@ def edit_program(current_user, public_id):
         logger.warning("user hasn't have permission")
         return jsonify({"status": "forbidden"}), 403
 
-    data = request.get_json()
+    data = request.get_json(force=True)
 
     # checking if program exists or not
     current_program = Program.query.filter_by(
@@ -194,13 +189,14 @@ def edit_program(current_user, public_id):
     # ######
 
     # updating prerequisites
-    current_program.prerequisites = []
-    prerequisites = data['prerequisite']
-    for prerequisite in prerequisites:
-        current_program_prerequisite = Program.query.filter_by(
-            public_program_id=prerequisite['public_program_id']).first()
-        if current_program_prerequisite:
-            current_program.prerequisites.append(current_program_prerequisite)
+    if 'prerequisite' in data:
+        current_program.prerequisites = []
+        prerequisites = data['prerequisite']
+        for prerequisite in prerequisites:
+            current_program_prerequisite = Program.query.filter_by(
+                public_program_id=prerequisite['public_program_id']).first()
+            if current_program_prerequisite:
+                current_program.prerequisites.append(current_program_prerequisite)
 
     # updating categories
     current_program.category = []
@@ -257,11 +253,14 @@ def retrieve_program(public_id):
         return jsonify({'status': "content not found"}), 404
 
     # ??????
-    prerequisites = current_program.prerequisites
-    prerequisite_list = []
-    for prerequisite in prerequisites:
-        prerequisite_list.append(
-            {"public_program_id": prerequisite.public_program_id})
+    if current_program.prerequisites is not None:
+        prerequisites = current_program.prerequisites
+        prerequisite_list = []
+        for prerequisite in prerequisites:
+            prerequisite_list.append(
+                {"public_program_id": prerequisite.public_program_id})
+    else:
+        prerequisite_list = ['there is no prerequisites for this program']
 
     program_categories = current_program.category
     category_list = []
@@ -403,14 +402,17 @@ def subscribe_to_program(current_user, public_program_id):
     selected_user = User.query.filter_by(
         public_id=current_user['public_id']).first()
     current_program = Program.query.filter_by(
-        public_program_id=public_program_id).first()
+        public_program_id=public_program_id
+    ).first()
 
-    enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
-                                                 student_id=selected_user.user_id
-                                                 ).first()
+    enrolled = ProgramEnrollment.query.filter_by(
+        program_id=current_program.program_id,
+        student_id=selected_user.user_id
+    ).first()
+
     if enrolled:
         logger.warning("user is already subscribed")
-        return jsonify({'error': 'User is already subscribed'})
+        return jsonify({'error': 'User is already subscribed'}), 400
 
     new_program_enrollment = ProgramEnrollment(
         student=selected_user,
@@ -438,7 +440,7 @@ def delete_program_enrollment(current_user, public_program_id):
                                                  ).first()  # user_id ???
     if not enrolled:
         logger.warning("user failed to enroll")
-        return jsonify({'error': 'user not enrolled'}), 403
+        return jsonify({'error': 'user not enrolled'}), 400
 
     db.session.delete(enrolled)
     db.session.commit()
