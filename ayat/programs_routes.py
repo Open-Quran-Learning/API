@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from ayat.models.programs import *
 from ayat.models.users import *
-from ayat.models.assessments import *
+from ayat.models import assessments
 
 from ayat.authentication_routes import token_required
 from ayat import app, db
@@ -405,7 +405,7 @@ def subscribe_to_program(current_user, public_program_id):
         public_program_id=public_program_id
     ).first()
 
-    enrolled = ProgramEnrollment.query.filter_by(
+    enrolled = assessments.ProgramEnrollment.query.filter_by(
         program_id=current_program.program_id,
         student_id=selected_user.user_id
     ).first()
@@ -414,7 +414,7 @@ def subscribe_to_program(current_user, public_program_id):
         logger.warning("user is already subscribed")
         return jsonify({'error': 'User is already subscribed'}), 400
 
-    new_program_enrollment = ProgramEnrollment(
+    new_program_enrollment = assessments.ProgramEnrollment(
         student=selected_user,
         program=current_program,
         is_accepted=True,
@@ -435,7 +435,7 @@ def delete_program_enrollment(current_user, public_program_id):
     current_program = Program.query.filter_by(
         public_program_id=public_program_id).first()
 
-    enrolled = ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
+    enrolled = assessments.ProgramEnrollment.query.filter_by(program_id=current_program.program_id,
                                                  student_id=selected_user.user_id
                                                  ).first()  # user_id ???
     if not enrolled:
