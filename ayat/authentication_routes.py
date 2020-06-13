@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from flask_cors import cross_origin
@@ -8,6 +8,13 @@ from ayat.models.users import *
 from ayat import app, db
 import os
 import logging
+
+from ayat import mail
+from flask_mail import Message
+from itsdangerous import URLSafeTimedSerializer
+
+
+serializer = URLSafeTimedSerializer("thisissecret")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -196,15 +203,9 @@ def delete_user(current_user, public_id):
 @cross_origin()
 def login_or_create():
     data = request.get_json(force=True)
-    print(data)
+        
     # login checking
-    print('this is request')
-    print(request)
-    print('this is data')
-    print(data)
-    # if not data['action'] :
-    #     return jsonify({"error": "user is unauthorized"}), 403
-
+   
     if data['action'] == 'login':
 
         user_email = data['email']
@@ -280,9 +281,25 @@ def login_or_create():
         new_user.guardians.append(new_guardian)
         db.session.add(new_user)
         db.session.commit()
+
+        ###############
+
+        user_email = new_user.email
+        token_email = serializer.dumps(user_email, salt= "email_confirm")
+        confirmation_link = url_for('confirm_email_token', token = token_email, public_id = new_user.public_id, _external = True)
+        content = f"Welcome to ayat. \n This is the link to confirm your email which will expire in two hours. \n link : \n {confirmation_link}"
+        msg = Message("Ayat Email Confirmation",sender="ayatquraancenter@gmail.com",recipients=user_email.split())
+        msg.body = content
+        mail.send(msg)  
+
+
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
+<<<<<<< HEAD
+                        'public_id': new_user.public_id,}), 200
+=======
                         "public_id" : new_user.public_id}), 200
+>>>>>>> programRoutes
 
     if data['action'] == 'register_staff':
 
@@ -320,6 +337,20 @@ def login_or_create():
         new_user.permissions.append(new_permission)
         db.session.add(new_user)
         db.session.commit()
+
+        user_email = new_user.email
+        token_email = serializer.dumps(user_email, salt= "email_confirm")
+        confirmation_link = url_for('confirm_email_token', token = token_email, public_id =new_user.public_id, _external = True)
+        content = f"Welcome to ayat. \n This is the link to confirm your email which will expire in two hours. \n link : \n {confirmation_link}"
+        msg = Message("Ayat Email Confirmation",sender="ayatquraancenter@gmail.com",recipients=user_email.split())
+        msg.body = content
+        mail.send(msg)  
+
+
         logger.info('user succeeded to register')
         return jsonify({'status': 'created',
+<<<<<<< HEAD
+                        'public_id': new_user.public_id,}), 200
+=======
                         "public_id" : new_user.public_id}), 200
+>>>>>>> programRoutes
