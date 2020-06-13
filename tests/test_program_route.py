@@ -54,9 +54,7 @@ def test_staff_creating_program(client):
         headers={'x-access-token': jwt}
     )
 
-    json_data = res.get_json()
     assert res.status_code == 200
-    # assert json_data['status'] == b'created'
     assert b'created' in res.data
 
 
@@ -477,10 +475,15 @@ def test_student_subscribing_to_program_again(client):
         student['type']
     )
 
-    res = client.post(
+    client.post(
         f'/v1/programs/{program["program_public_id"]}/enrollments',
         headers={'x-access-token': jwt}
     )
+
+    res = client.post(
+            f'/v1/programs/{program["program_public_id"]}/enrollments',
+            headers={'x-access-token': jwt}
+            )
 
     res_json = res.get_json()
 
@@ -496,6 +499,11 @@ def test_enrolled_student_cancel_subscription(client):
         student['email'],
         student['type']
     )
+
+    client.post(
+            f'/v1/programs/{program["program_public_id"]}/enrollments',
+            headers={'x-access-token': jwt}
+            )
 
     res = client.delete(
         f'/v1/programs/{program["program_public_id"]}/enrollments',
