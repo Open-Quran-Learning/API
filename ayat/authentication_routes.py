@@ -31,7 +31,7 @@ def token_required(f):
             return jsonify({'message': 'Token is missing'}), 401
 
         try:
-            current_user = jwt.decode(token, app.config['SECRET_KEY'])
+            current_user = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
             logger.info('success to decode token')
 
         except:
@@ -220,7 +220,7 @@ def login_or_create():
             if check_password_hash(user.password, user_password):
                 token = jwt.encode({'public_id': str(user.public_id),
                                     'email': user.email,
-                                    'type': user.type}, app.config['SECRET_KEY'])
+                                    'type': user.type}, app.config['SECRET_KEY'], algorithm='HS256')
                 logger.info('user succeeded to login')
                 return jsonify({
                     'token': token.decode('UTF-8'),

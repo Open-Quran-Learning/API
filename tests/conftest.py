@@ -86,7 +86,7 @@ def create_staff(email, phone):
 def generate_jwt(public_id, email, type):
     token = jwt.encode({'public_id': str(public_id),
                         'email': email,
-                        'type': type}, app.config['SECRET_KEY'])
+                        'type': type}, app.config['SECRET_KEY'], algorithm='HS256')
 
     return token
 
