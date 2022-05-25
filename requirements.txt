@@ -18,7 +18,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 psycopg2-binary==2.8.5
 pycparser==2.20
-PyJWT==1.7.1
+PyJWT==2.4.0
 pylint==2.4.4
 pylint-flask-sqlalchemy==0.2.0
 six==1.14.0
